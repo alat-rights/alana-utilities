@@ -1,5 +1,4 @@
 from typing import List, Optional
-from color import red
 import re
 
 def get_xml_pattern(tag: str):
