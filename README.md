@@ -15,3 +15,4 @@ TODO:
 - Support for multi-turn model interactions
 - Automatic error checking (are there mistakes in this code, sanity checking of model outputs)
 - Automatic model-switching on rate limit
+- Prompt test case generation and easy prompt testing
