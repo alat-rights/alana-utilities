@@ -7,5 +7,5 @@ setup(
    author='Alana',
    author_email='hi@alana.computer',
    packages=find_packages(),  #same as name
-   install_requires=['re', 'anthropic', 'os', 'typing', 'colorama', 'logging'], #external packages as dependencies
+   install_requires=['anthropic', 'typing', 'colorama', 'logging'], #external packages as dependencies
 )
