@@ -1,6 +1,11 @@
 # alana-utilities
 Quick utilities for myself, mostly geared toward interacting with LLMs.
 
+Install Instructions
+```
+pip install alana
+```
+
 - Easy color print: red, green, blue, yellow, cyan
 - Make it easier to use the Anthropic API:
   - gen, for easy Claude generations
