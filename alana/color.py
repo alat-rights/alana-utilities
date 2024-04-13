@@ -36,4 +36,3 @@ def cyan(var: Any, loud: bool = True, logger: Optional[logging.Logger] = None) -
     output = f"{Fore.CYAN} {var} {Style.RESET_ALL}"
     log(loud, output, logger)
     return output
-
