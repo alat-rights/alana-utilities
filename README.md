@@ -11,10 +11,12 @@ pip install alana
   - gen, for easy Claude generations
   - gen_examples, gen_examples_list for generating few-shot examples
   - get_xml, for using regex to get XML tag contents
+- Easy prompt generation (meta-prompt)
 - A bunch of aliases
 
 TODO:
-- Easy prompt generation (meta-prompt) and alternative prompts given prompt
+- Generating alternative prompts given a prompt
+- Better support for multi-turn prompting
 - OpenAI model support
 - Support for automatic "are you sure"/"are you confused" multi-turn prompting
 - Support for multi-turn model interactions
