@@ -6,6 +6,7 @@ Install Instructions
 pip install alana
 ```
 
+Features
 - Easy color print: `alana.red`, `alana.green`, `alana.blue`, `alana.yellow`, `alana.cyan`
 - Make it easier to use the Anthropic API:
   - `alana.gen`, for easy Claude generations
