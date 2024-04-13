@@ -6,12 +6,12 @@ Install Instructions
 pip install alana
 ```
 
-- Easy color print: red, green, blue, yellow, cyan
+- Easy color print: `alana.red`, `alana.green`, `alana.blue`, `alana.yellow`, `alana.cyan`
 - Make it easier to use the Anthropic API:
-  - gen, for easy Claude generations
-  - gen_examples, gen_examples_list for generating few-shot examples
-  - get_xml, for using regex to get XML tag contents
-- Easy prompt generation (meta-prompt)
+  - `alana.gen`, for easy Claude generations
+  - `alana.gen_examples`, `alana.gen_examples_list` for generating few-shot examples
+  - `alana.get_xml`, for using regex to get XML tag contents
+- Easy prompt generation (meta-prompt) `alana.gen_prompt`
 - A bunch of aliases
 
 TODO:
