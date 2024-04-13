@@ -6,13 +6,13 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
    name='alana',
-   version='0.0.1',  # Update the version number as needed
+   version='0.0.2',  # Update the version number as needed
    author='Alana',
    author_email='hi@alana.computer',
    description='Utilities for Alana, and maybe you too. Mostly geared toward LLM-heavy workflows.',
    long_description=long_description,
    long_description_content_type="text/markdown",
-   url='https://github.com/alat-rights/alana-utilities',  # Replace with your repository URL
+   url='https://github.com/alat-rights/alana-utilities',
    packages=find_packages(),
    classifiers=[
          'Development Status :: 3 - Alpha',
@@ -29,6 +29,5 @@ setup(
    install_requires=[
       'anthropic',
       'colorama',
-      'typing',
    ],
 )
