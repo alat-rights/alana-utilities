@@ -9,8 +9,9 @@ pip install alana
 ⚠️ Warning: This library is in active early development! No guarantees are made for backward compatibility. The library is NOT intended to be production-ready.
 
 ## Is this for me?
-This library is mostly designed for me (hence the name), but I hope they're helpful for you too!
+This library is mostly designed for me (hence the name), but they might be helpful for you too!
 
+Here are some questions to ask yourself when considering whether to use this library:
 - Do you interact with LLMs? (Currently, only Anthropic LLMs are supported).
 - Do you value conciseness?
 - Are you writing **non-production prototype code**, where 1, occassional bugs and behavioral changes are acceptable, and 2, developer ergonomics are more important than performance?
