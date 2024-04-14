@@ -46,7 +46,7 @@ messages.append(
     content=output_text
   )
 )
-print(messages)
+print(messages)  # [{'role': 'user', 'content': 'Hello, Claude!'}, {'role': 'assistant', 'content': "Hello! It's nice to meet you. How are you doing today?"}]
 ```
 
 Equivalent `alana` code:
@@ -54,7 +54,7 @@ Equivalent `alana` code:
 import alana
 messages = []
 alana.gen(user="Hello, Claude!", messages=messages, model="opus", max_tokens=1024)
-print(messages)
+print(messages)  # [{'role': 'user', 'content': 'Hello, Claude!'}, {'role': 'assistant', 'content': "Hello! It's nice to meet you. How are you doing today?"}]
 ```
 
 Also, equivalent `alana` code thanks to defaults:
@@ -62,7 +62,7 @@ Also, equivalent `alana` code thanks to defaults:
 import alana
 messages = []
 alana.gen(user="Hello, Claude!", messages=messages)
-print(messages)
+print(messages)  # [{'role': 'user', 'content': 'Hello, Claude!'}, {'role': 'assistant', 'content': "Hello! It's nice to meet you. How are you doing today?"}]
 ```
 
 ## Features:
