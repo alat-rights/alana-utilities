@@ -16,10 +16,12 @@ def get_xml(tag: str, content: str) -> List[str]:
     return matches
 
 def remove_xml(tag: str = "reasoning", content: str = "") -> str:
+    if tag.count('<') > 0 or tag.count('>') > 0:
+        raise ValueError("No '>' or '<' allowed in get_xml tag name!")
     if content == "":
         red("`remove_xml`: Empty string provided as `content`.") # TODO: Improve error logging
-    pattern = get_xml_pattern(tag)
-    output = re.sub(pattern, "", content)
+    pattern = rf"<{tag}>.*?</{tag}>" # NOTE: Removed group matching, so can't use `get_xml_pattern`
+    output = re.sub(pattern, "", content, flags=re.DOTALL)
     return output
 
 DEFAULT_MODEL = "opus"
