@@ -4,11 +4,14 @@
 ```
 pip install alana
 ```
-⚠️ Warning: This library is in active early development! No guarantees are made for backward compatibility. The library is NOT intended to be production-ready.
+🎵 Note: I have been making new releases frequently. Make sure your package is up-to-date!
+
+⚠️ Warning: This library is in active early development! No guarantees are made for backward compatibility. The library is NOT production-ready.
 
 ## Is this for me?
-This library is mostly designed for me (hence the name), but I hope they're helpful for you too!
+This library is mostly designed for me (hence the name), but they might be helpful for you too!
 
+Here are some questions to ask yourself when considering whether to use this library:
 - Do you interact with LLMs? (Currently, only Anthropic LLMs are supported).
 - Do you value conciseness?
 - Are you writing **non-production prototype code**, where 1, occassional bugs and behavioral changes are acceptable, and 2, developer ergonomics are more important than performance?
@@ -68,7 +71,7 @@ print(messages)  # [{'role': 'user', 'content': 'Hello, Claude!'}, {'role': 'ass
 
 ## Features:
 - Easy color print: `alana.red`, `alana.green`, `alana.blue`, `alana.yellow`, `alana.cyan`. Try `alana.green("Hello!")`
-- Easy pretty print with Sonnnet (or an Anthropic model of your choice): `alana.pretty_print`. Try `alana.pretty_print(t.arange(16, device='cpu').reshape(2,2,4))`
+- Easy pretty print with Sonnet (or an Anthropic model of your choice): `alana.pretty_print`. Try `alana.pretty_print(t.arange(16, device='cpu').reshape(2,2,4))`
 - Make it easier to use the Anthropic API:
   - `alana.gen`, for easy Claude generations. Try `alana.gen(user="Hello, Claude!")`. You can pass in a `messages` parameter either in place of or together with a `user` parameter. ⚠️ `messages` support is not thoroughly tested yet!
   - `alana.gen_examples`, `alana.gen_examples_list` for generating few-shot examples.
