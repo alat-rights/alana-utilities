@@ -4,5 +4,5 @@ This is the documentation for alana-utilities, an utilities library primarily fo
 
 ## Modules
 
-* [prompt](prompt.md)
-* [color](color.md)
+* [prompt](alana/prompt.md)
+* [color](alana/color.md)
