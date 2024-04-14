@@ -4,9 +4,7 @@ import re
 import os
 from anthropic import Anthropic
 from anthropic.types import Message, MessageParam
-from alana import globals # import DEFAULT_MODEL, MODELS
-
-# os.environ["ANTHROPIC_API_KEY"] = "sk-ant-s4mpl3k3yf0rd3m0n1yNOTr34L"
+from alana import globals
 
 def get_xml_pattern(tag: str):
     if tag.count('<') > 0 or tag.count('>') > 0:
