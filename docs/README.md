@@ -81,7 +81,6 @@ print(messages)  # [{'role': 'user', 'content': 'Hello, Claude!'}, {'role': 'ass
 - A bunch of aliases (Try: `alana.few_shot`, `alana.n_shot`, or `alana.xml`)
 
 ## Coming Soon:
-- Improve docs
 - Generating alternative prompts given a prompt
 - Better support for multi-turn prompting
 - OpenAI model support
