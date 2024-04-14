@@ -105,7 +105,7 @@ def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[Me
     
     if append == True:
         if messages[-1]["role"] == "assistant":  # NOTE: Anthropic API does not allow non-alternating roles (raises Err400). Let's enforce this.
-            existing_assistant_content: str = messages[-1]["role"]
+            existing_assistant_content: str = messages[-1]["content"]
             assistant_content: str = existing_assistant_content + output.content[0].text
             messages.pop()
         else:
