@@ -259,6 +259,10 @@ def xml(tag: str, content: str) -> List[str]:
     """Alias for get_xml"""
     return get_xml(tag, content)
 
+def rm_xml(tag: str, content: str) -> str:
+    """Alias for remove_xml"""
+    return rm_xml(tag, content)
+
 def n_shot_list(instruction: str, n_examples: int = 5, model: str = DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=0.3, **kwargs) -> List[str]:
     """Alias for gen_examples_list"""
     return gen_examples_list(instruction=instruction, n_examples=n_examples, model=model, api_key=api_key, max_tokens=max_tokens, temperature=temperature, **kwargs)
