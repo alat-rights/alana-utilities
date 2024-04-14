@@ -27,6 +27,15 @@ class TestFunctions(unittest.TestCase):
         self.assertEqual(first=updated_messages[-1]["role"], second="user")
         self.assertEqual(first=updated_messages[-1]["content"], second="Hello")
     
+    def test_gen(self):
+        messages: list[MessageParam] = [MessageParam(role="user", content="Hi")]
+        gen(messages=messages, model="haiku", system="Respond in Spanish", loud=False)
+        green(var=f"Confirm output in Spanish {messages[-1]['content']}")
+        self.assertEqual(first=len(messages), second=2)
+        self.assertEqual(first=messages[-1]["role"], second="assistant")
+        self.assertEqual(first=messages[0]["content"], second="Hi")
+        self.assertEqual(first=messages[0]["role"], second="user")
+ 
     def test_gen_prefill(self):
         messages: list[MessageParam] = [MessageParam(role="user", content="Hi"), MessageParam(role="assistant", content="Hi")]
         gen(messages=messages, model="haiku", loud=False)
@@ -36,14 +45,12 @@ class TestFunctions(unittest.TestCase):
         self.assertEqual(first=messages[-1]["content"][:2], second="Hi") # type: ignore
         self.assertGreater(a=len(messages[-1]["content"]), b=len("Hi")) # type: ignore
     
-    def test_gen(self):
-        messages: list[MessageParam] = [MessageParam(role="user", content="Hi")]
-        gen(messages=messages, model="haiku", system="Respond in Spanish", loud=False)
-        green(var=f"Confirm output in Spanish {messages[-1]['content']}")
-        self.assertEqual(first=len(messages), second=2)
-        self.assertEqual(first=messages[-1]["role"], second="assistant")
-        self.assertEqual(first=messages[0]["content"], second="Hi")
-        self.assertEqual(first=messages[0]["role"], second="user")
+    def test_gen_with_user(self):
+        messages: list[MessageParam] = [MessageParam(role="user", content="Hi"), MessageParam(role="assistant", content="Hi")]
+        gen(messages=messages, user="Say Hello")
+        for i in range(4):
+            self.assertEqual(first=messages[i]["role"], second=["user", "assistant", "user", "assistant"][i])
+
 
 if __name__ == "__main__":
     unittest.main()
