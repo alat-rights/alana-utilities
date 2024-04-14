@@ -1,4 +1,4 @@
-from typing import Dict, Literal
+from typing import Dict, Literal, Tuple
 
 MODELS: Dict[str, str] = {
     'opus' : 'claude-3-opus-20240229',
@@ -164,3 +164,6 @@ Be sure that you faithfully reproduce the data in the raw string, and only chang
 Produce your final output in <pretty/> XML tags.
 """
 }
+
+def get_prompts(function_name: Literal["few_shot", "gen_prompt", "pretty_print"], str) -> Tuple[str, str]:
+    return (SYSTEM[function_name], USER[function_name])
