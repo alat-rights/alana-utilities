@@ -12,10 +12,11 @@ plugins:
             show_root_heading: true
             show_submodules: true
             docstring_style: google
-          paths: [alana]
+          paths: [alana, '.']
 nav:
   - Home: README.md
   - API Reference:
     - prompt: prompt.md
     - color: color.md
+  - Testing: tests.md
   - Website Documentation: website.md
