@@ -1,7 +1,8 @@
 # color Module
 
 ```{eval-rst}
-.. automodule:: color
+.. autodoc::
+   :module: alana.color
    :members:
    :undoc-members:
    :show-inheritance:

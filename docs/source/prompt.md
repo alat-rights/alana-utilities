@@ -1,7 +1,8 @@
 # prompt Module
 
 ```{eval-rst}
-.. automodule:: prompt
+.. autodoc::
+   :module: alana.prompt
    :members:
    :undoc-members:
    :show-inheritance:
