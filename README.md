@@ -21,6 +21,7 @@ This library is mostly designed for me (hence the name), but I hope they're help
   - I do not try hard to anticipate future upstream API changes. I'm also ok with breaking backward compatibility to make my functions more concise and more usable.
   - Usability > Principles. While I don't relish in it, I'm ok with breaking conventions designed for large production libraries if it speeds up programmers who use `alana`. The priority is to make the library intuitive and fast.
   - I don't try to serve every use-case.
+- Simplicity is key. This library strives to be readable and straightforward.
 
 ## Motivating Examples:
 (I tested these, and tried to make sure my code was idiomatic in all cases. Sorry if I messed up! Please report any issues to `h i ( a t ) [pip package name for this library] dot computer`.)
