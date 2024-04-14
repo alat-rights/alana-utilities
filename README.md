@@ -71,7 +71,7 @@ print(messages)  # [{'role': 'user', 'content': 'Hello, Claude!'}, {'role': 'ass
 
 ## Features:
 - Easy color print: `alana.red`, `alana.green`, `alana.blue`, `alana.yellow`, `alana.cyan`. Try `alana.green("Hello!")`
-- Easy pretty print with Sonnnet (or an Anthropic model of your choice): `alana.pretty_print`. Try `alana.pretty_print(t.arange(16, device='cpu').reshape(2,2,4))`
+- Easy pretty print with Sonnet (or an Anthropic model of your choice): `alana.pretty_print`. Try `alana.pretty_print(t.arange(16, device='cpu').reshape(2,2,4))`
 - Make it easier to use the Anthropic API:
   - `alana.gen`, for easy Claude generations. Try `alana.gen(user="Hello, Claude!")`. You can pass in a `messages` parameter either in place of or together with a `user` parameter. ⚠️ `messages` support is not thoroughly tested yet!
   - `alana.gen_examples`, `alana.gen_examples_list` for generating few-shot examples.
