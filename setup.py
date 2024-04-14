@@ -1,8 +1,10 @@
 from setuptools import setup, find_packages
+import os
+readme_path: str = os.path.join(os.path.dirname(p=__file__), "docs", "README.md")
 
 # Read the contents of your README file
-with open("docs/README.md", "r", encoding="utf-8") as fh:
-   long_description = fh.read()
+with open(file=readme_path, mode="r", encoding="utf-8") as fh:
+   long_description: str = fh.read()
 
 setup(
    name='alana',
