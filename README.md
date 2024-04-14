@@ -84,4 +84,5 @@ print(messages)  # [{'role': 'user', 'content': 'Hello, Claude!'}, {'role': 'ass
 - Support for automatic "are you sure"/"are you confused" multi-turn prompting
 - Automatic error checking (are there mistakes in this code, sanity checking of model outputs)
 - Automatic model-switching on rate limit
+- Support for quick-and-dirty unit-testing with Claude!
 - Prompt test case generation and easy prompt testing
