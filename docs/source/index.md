@@ -4,5 +4,8 @@ This is the documentation for alana-utilities, an utilities library primarily fo
 
 ## Modules
 
-* [prompt](alana/prompt.md)
-* [color](alana/color.md)
+```{toctree}
+:maxdepth: 2
+
+prompt.md
+color.md
