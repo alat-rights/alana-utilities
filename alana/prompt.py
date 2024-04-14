@@ -6,6 +6,8 @@ from anthropic import Anthropic
 from anthropic.types import Message, MessageParam
 from alana import globals # import DEFAULT_MODEL, MODELS
 
+# os.environ["ANTHROPIC_API_KEY"] = "sk-ant-..."
+
 def get_xml_pattern(tag: str):
     if tag.count('<') > 0 or tag.count('>') > 0:
         raise ValueError("No '>' or '<' allowed in get_xml tag name!")
