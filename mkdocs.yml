@@ -1,0 +1,24 @@
+site_name: Alana-Utils Documentation
+theme:
+  name: material
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          handler: mkdocstrings.handlers.python
+          setup_commands:
+            - import sys
+            - sys.path.append(".")
+          options:
+            show_source: true
+            show_root_heading: true
+            show_submodules: true
+            docstring_style: google
+          paths: [alana]
+nav:
+  - Home: index.md
+  - API Reference:
+      - alana:
+          - prompt: prompt.md
+          - color: color.md

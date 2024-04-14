@@ -29,8 +29,7 @@ def remove_xml(tag: str = "reasoning", content: str = "", repl: str="") -> str:
     return output
 
 def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[MessageParam]] = None, append: bool = True, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens = 1024, temperature=0.3, loud=True, **kwargs) -> str:
-    """
-    Generate a response from Claude. Returns the text content (`str`) of Claude's response. If you want the Message object instead, use `gen_msg`.
+    """Generate a response from Claude. Returns the text content (`str`) of Claude's response. If you want the Message object instead, use `gen_msg`.
     
     Args:
         user (Optional[str], optional): The user's message content. Defaults to None.
@@ -103,8 +102,7 @@ def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[Me
     return output.content[0].text
 
 def gen_msg(messages: List[MessageParam], system: str = "", model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens = 1024, temperature=0.3, loud=True, **kwargs) -> Message:
-    """
-    Generate a response from Claude using the Anthropic API.
+    """Generate a response from Claude using the Anthropic API.
 
     Args:
         messages (List[MessageParam]): A list of `anthropic.types.MessageParam`s representing the conversation history.
@@ -165,8 +163,7 @@ def gen_msg(messages: List[MessageParam], system: str = "", model: str = globals
     return message
 
 def gen_examples_list(instruction: str, n_examples: int = 5, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=0.3, **kwargs) -> List[str]:
-    """
-    Uses Claude to generate a Python list of few-shot examples for a given natural language instruction.
+    """Uses Claude to generate a Python list of few-shot examples for a given natural language instruction.
 
     Args:
         instruction (str): The natural language instruction for which to generate examples.
@@ -207,8 +204,7 @@ def gen_examples_list(instruction: str, n_examples: int = 5, model: str = global
     return get_xml(tag='example', content=model_output)
 
 def gen_examples(instruction: str, n_examples: int = 5, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=0.3, **kwargs) -> str:
-    """
-    Generate a formatted string containing few-shot examples for a given natural language instruction. Uses `gen_examples_list`.
+    """Generate a formatted string containing few-shot examples for a given natural language instruction. Uses `gen_examples_list`.
 
     Args:
         instruction (str): The natural language instruction for which to generate examples.
@@ -242,8 +238,7 @@ def gen_examples(instruction: str, n_examples: int = 5, model: str = globals.DEF
     return formatted_examples
 
 def gen_prompt(instruction: str, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=0.3, **kwargs) -> Dict[Literal["system", "user", "full"], Union[str, List]]:
-    """
-    Meta-prompter! Generate a prompt given an arbitrary instruction.
+    """Meta-prompter! Generate a prompt given an arbitrary instruction.
     
     Args:
         instruction (str): The arbitrary instruction for which to generate a prompt.
@@ -296,8 +291,7 @@ def gen_prompt(instruction: str, model: str = globals.DEFAULT_MODEL, api_key: Op
     return {"system": system_prompt, "user": user_prompt, "full": full_output}
 
 def pretty_print(var: Any, loud: bool = True, model: str = "sonnet") -> str:
-    """
-    Pretty-print an arbitrary variable. By default, uses Sonnet (not globals.DEFAULT_MODEL).
+    """Pretty-print an arbitrary variable. By default, uses Sonnet (not globals.DEFAULT_MODEL).
 
     Args:
         var (Any): The variable to pretty-print.
