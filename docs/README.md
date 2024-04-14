@@ -80,6 +80,13 @@ print(messages)  # [{'role': 'user', 'content': 'Hello, Claude!'}, {'role': 'ass
   - `alana.remove_xml` to strip certain XML tag-enclosed content from a string (along with the tags). This is primarily intended to get rid of "<reasoning>...</reasoning>" strings. ⚠️ Regex parsing of XML may be unreliable! This function has not been thoroughly tested yet!
 - A bunch of aliases (Try: `alana.few_shot`, `alana.n_shot`, or `alana.xml`)
 
+## Testing:
+There are simple tests written with `unittest`. I am working on extending the test suite.
+
+```
+$ python simple_tests.py
+```
+
 ## Coming Soon:
 - Generating alternative prompts given a prompt
 - Better support for multi-turn prompting
