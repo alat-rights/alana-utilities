@@ -3,7 +3,7 @@ from alana.color import red, yellow
 import re
 import os
 from anthropic import Anthropic
-from anthropic.types import MessageParam
+from anthropic.types import Message, MessageParam
 
 def get_xml_pattern(tag: str):
     if tag.count('<') > 0 or tag.count('>') > 0:
@@ -11,21 +11,22 @@ def get_xml_pattern(tag: str):
     return rf"<{tag}>(.*?)</{tag}>"
 
 def get_xml(tag: str, content: str) -> List[str]:
-    pattern = get_xml_pattern(tag)
-    matches = re.findall(pattern, content, re.DOTALL)
+    pattern: str = get_xml_pattern(tag=tag)
+    matches: List[Any] = re.findall(pattern=pattern, string=content, flags=re.DOTALL)
     return matches
 
 def remove_xml(tag: str = "reasoning", content: str = "") -> str:
     if tag.count('<') > 0 or tag.count('>') > 0:
         raise ValueError("No '>' or '<' allowed in get_xml tag name!")
     if content == "":
-        red("`remove_xml`: Empty string provided as `content`.") # TODO: Improve error logging
-    pattern = rf"<{tag}>.*?</{tag}>" # NOTE: Removed group matching, so can't use `get_xml_pattern`
-    output = re.sub(pattern, "", content, flags=re.DOTALL)
+        red(var="`remove_xml`: Empty string provided as `content`.") # TODO: Improve error logging
+    pattern: str = rf"<{tag}>.*?</{tag}>" # NOTE: Removed group matching, so can't use `get_xml_pattern`
+    output: str = re.sub(pattern=pattern, repl="", string=content, flags=re.DOTALL)
     return output
 
+
 DEFAULT_MODEL = "opus"
-MODELS = {
+MODELS: Dict[str, str] = {
     'opus' : 'claude-3-opus-20240229',
     'claude-3-opus-20240229' : 'claude-3-opus-20240229',
     'sonnet' : 'claude-3-sonnet-20240229',
@@ -37,23 +38,37 @@ MODELS = {
     'claude-instant-1.2' : 'claude-instant-1.2'
 }
 
-
-def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[MessageParam]] = None, model: str = DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens = 1024, temperature=0.3, loud=True, **kwargs) -> str:
+def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[MessageParam]] = None, append: bool = True, model: str = DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens = 1024, temperature=0.3, loud=True, **kwargs) -> str:
     if user is None and messages is None:
         raise ValueError("No prompt provided! `user` and `messages` are both None.")
-    elif messages is None:
-        messages=[
-            MessageParam(
-                role="user",
-                content=user, # type: ignore
-            ),
-        ]
 
-    backend = MODELS[DEFAULT_MODEL]
+    if messages is None:
+        assert user is not None  # To be stricter, type(user) == str
+        messages=[
+            MessageParam(role="user", content=user), # type: ignore
+        ]
+    elif user is not None:
+        assert messages is not None  # To be stricter, messages is List[MessageParam]
+        messages.append(
+            MessageParam(role="user", content=user)  # TODO: Check that non-alternating roles are ok (e.g. user, assistant, assistant)
+        )
+
+    output: Message = gen_msg(system=system, messages=messages, model=model, api_key=api_key, max_tokens=max_tokens, temperature=temperature, **kwargs)
+    if append == True:
+        messages.append(  # TODO: Check that non-alternating roles are ok (e.g. user, assistant, assistant)
+            MessageParam(
+                role="assistant",
+                content=output.content[0].text
+            )
+        )
+    return output.content[0].text
+
+def gen_msg(messages: List[MessageParam], system: str = "", model: str = DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens = 1024, temperature=0.3, loud=True, **kwargs) -> Message:
+    backend: str = MODELS[DEFAULT_MODEL]
     if model in MODELS:
         backend = MODELS[model]
     else:
-        red(f"gen() -- Caution! model string not recognized; reverting to {DEFAULT_MODEL=}.") # TODO: C'mon we can do better error logging than this
+        red(var=f"gen() -- Caution! model string not recognized; reverting to {DEFAULT_MODEL=}.") # TODO: C'mon we can do better error logging than this
 
     if api_key is None:
         api_key = os.environ.get("ANTHROPIC_API_KEY")
@@ -61,20 +76,25 @@ def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[Me
         api_key=api_key,
     )
 
-    message = client.messages.create(
+    if 'stream' in kwargs:
+        red(var="Streaming not supported! Disabling...")
+        kwargs['stream'] = False
+
+    message: Message = client.messages.create(  # TODO: Enable streaming support
         max_tokens=max_tokens,
         messages=messages,
         system=system,
-        temperature=temperature,
         model=backend,
+        temperature=temperature,
         **kwargs
     )
     if loud:
-        yellow(message)
-    return message.content[0].text
+        yellow(var=message)
+
+    return message
 
 def gen_examples_list(instruction: str, n_examples: int = 5, model: str = "sonnet", api_key: Optional[str] = None, max_tokens: int = 1024, temperature=0.3, **kwargs) -> List[str]:
-    system = """You are a prompt engineering assistant tasked with generating few-shot examples given a task.
+    system: str = """You are a prompt engineering assistant tasked with generating few-shot examples given a task.
 
     Your user would like to accomplish a specific task. His/her description of the task will be enclosed in <description/> XML tags.
     
@@ -84,19 +104,19 @@ def gen_examples_list(instruction: str, n_examples: int = 5, model: str = "sonne
     """.format(n_examples=n_examples)
 
     if n_examples < 1:
-        red("Too few examples provided! Trying anyway...")
+        red(var="Too few examples provided! Trying anyway...")
 
-    user = """The user's task is as follows:
+    user: str = """The user's task is as follows:
     <description>{instruction}</description>
 
     Before generating your examples, feel free to think out loud using <thinking></thinking> XML tags.
     """.format(instruction=instruction)
-    model_output = gen(user=user, system=system, model=model, api_key=api_key, max_tokens=max_tokens, temperature=temperature, **kwargs)
-    return get_xml('example', model_output)
+    model_output: str = gen(user=user, system=system, model=model, api_key=api_key, max_tokens=max_tokens, temperature=temperature, **kwargs)
+    return get_xml(tag='example', content=model_output)
 
 def gen_examples(instruction: str, n_examples: int = 5, model: str = DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=0.3, **kwargs) -> str:
-    examples = gen_examples_list(instruction=instruction, n_examples=n_examples, model=model, api_key=api_key, max_tokens=max_tokens, temperature=temperature, **kwargs)
-    formatted_examples = "\n<examples>\n<example>" + '</example>\n<example>'.join(examples) + "</example>\n</examples>"
+    examples: List[str] = gen_examples_list(instruction=instruction, n_examples=n_examples, model=model, api_key=api_key, max_tokens=max_tokens, temperature=temperature, **kwargs)
+    formatted_examples: str = "\n<examples>\n<example>" + '</example>\n<example>'.join(examples) + "</example>\n</examples>"
     return formatted_examples
 
 def gen_prompt(instruction: str, model: str = DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=0.3, **kwargs) -> Dict[str, Union[str, List]]:
@@ -124,7 +144,7 @@ def gen_prompt(instruction: str, model: str = DEFAULT_MODEL, api_key: Optional[s
 
     Before producing your prompt, feel free to think out loud using <reasoning/> XML tags. Enclose your thinking in <reasoning/> XML tags.
     """
-    meta_prompt = """Here is the task description:
+    meta_prompt: str = """Here is the task description:
 
     <description>
     {instruction}
@@ -136,11 +156,11 @@ def gen_prompt(instruction: str, model: str = DEFAULT_MODEL, api_key: Optional[s
     3. Enclose the user prompt in <user_prompt/> XML tags.
     """.format(instruction=instruction)
 
-    full_output = gen(user=meta_prompt, system=meta_system_prompt, model=model, api_key=api_key, max_tokens=max_tokens, temperature=temperature, **kwargs)
-    system_prompt = get_xml("system_prompt", full_output)
+    full_output: str = gen(user=meta_prompt, system=meta_system_prompt, model=model, api_key=api_key, max_tokens=max_tokens, temperature=temperature, **kwargs)
+    system_prompt: Union[List[str], str] = get_xml(tag="system_prompt", content=full_output)
     if len(system_prompt) >= 1:
         system_prompt = system_prompt[0]
-    user_prompt = get_xml("user_prompt", full_output)
+    user_prompt: Union[List[str], str] = get_xml(tag="user_prompt", content=full_output)
     if len(user_prompt) == 1:
         user_prompt = user_prompt[0]
     return {"system": system_prompt, "user": user_prompt, "full": full_output}
@@ -240,8 +260,8 @@ def pretty_print(var: Any, loud: bool = True, model: str = "sonnet") -> str:
     Produce your final output in <pretty/> XML tags.
     """.format(var=f'{var}')
 
-    string = gen(user=user, system=system, model=model)
-    pretty = get_xml("pretty", string)
+    string: str = gen(user=user, system=system, model=model)
+    pretty: Union[List[str], str] = get_xml(tag="pretty", content=string)
     if len(pretty) == 0:
         raise ValueError("`pretty_print`: XML parsing error! Number of <pretty/> tags is 0.")
     else:
@@ -253,15 +273,15 @@ def pretty_print(var: Any, loud: bool = True, model: str = "sonnet") -> str:
 # Aliases!
 def grab(tag: str, content: str) -> List[str]:
     """Alias for get_xml"""
-    return get_xml(tag, content)
+    return get_xml(tag=tag, content=content)
 
 def xml(tag: str, content: str) -> List[str]:
     """Alias for get_xml"""
-    return get_xml(tag, content)
+    return get_xml(tag=tag, content=content)
 
 def rm_xml(tag: str, content: str) -> str:
     """Alias for remove_xml"""
-    return rm_xml(tag, content)
+    return rm_xml(tag=tag, content=content)
 
 def n_shot_list(instruction: str, n_examples: int = 5, model: str = DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=0.3, **kwargs) -> List[str]:
     """Alias for gen_examples_list"""
