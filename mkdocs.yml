@@ -21,3 +21,4 @@ nav:
   - API Reference:
     - prompt: prompt.md
     - color: color.md
+  - Website Documentation: website.md
