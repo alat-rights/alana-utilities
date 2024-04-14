@@ -1,6 +1,6 @@
 test.py
 log.txt
-.vscode
+.vscode/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
