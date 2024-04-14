@@ -28,6 +28,15 @@ def remove_xml(tag: str = "reasoning", content: str = "", repl: str="") -> str:
     output: str = re.sub(pattern=pattern, repl=repl, string=content, flags=re.DOTALL)
     return output
 
+def respond(user: str, messages: Optional[List[MessageParam]] = None) -> List[MessageParam]:
+    if messages is None:
+        messages = []
+    messages.append(MessageParam(
+        role='user',
+        content=user,
+    ))
+    return messages
+
 def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[MessageParam]] = None, append: bool = True, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens = 1024, temperature=0.3, loud=True, **kwargs) -> str:
     """Generate a response from Claude. Returns the text content (`str`) of Claude's response. If you want the Message object instead, use `gen_msg`.
     
