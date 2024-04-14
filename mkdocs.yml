@@ -17,8 +17,7 @@ plugins:
             docstring_style: google
           paths: [alana]
 nav:
-  - Home: index.md
+  - Home: README.md
   - API Reference:
-      - alana:
-          - prompt: prompt.md
-          - color: color.md
+    - prompt: prompt.md
+    - color: color.md
