@@ -98,7 +98,7 @@ def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[Me
             MessageParam(role="user", content=user)  # TODO: Check that non-alternating roles are ok (e.g. user, assistant, assistant)
         )
 
-    output: Message = gen_msg(system=system, messages=messages, model=model, api_key=api_key, max_tokens=max_tokens, temperature=temperature, **kwargs)
+    output: Message = gen_msg(system=system, messages=messages, model=model, api_key=api_key, max_tokens=max_tokens, loud=loud, temperature=temperature, **kwargs)
 
     if len(output.content) == 0:
         raise ValueError(f"Claude did not provide a response. Stop reason: {output.stop_reason}. Full API response: {output}")
