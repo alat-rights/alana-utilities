@@ -15,7 +15,7 @@ Here are some questions to ask yourself when considering whether to use this lib
 - Do you interact with LLMs? (Currently, only Anthropic LLMs are supported).
 - Do you value conciseness?
 - Are you writing **non-production prototype code**, where 1, occassional bugs and behavioral changes are acceptable, and 2, developer ergonomics are more important than performance?
-  - Note: This library *strongly* assumes this use-case! Many functions actually write to the console by default (you can disable this with `loud=False`).
+  - Note: This library *strongly* assumes this use-case! e.g. `alana.gen` actually writes to the console by default (you can disable this with `loud=False`).
 - Do the features appeal to you?
 
 ## Philosophy:
