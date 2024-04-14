@@ -4,6 +4,7 @@
 ```
 pip install alana
 ```
+🎵 Note: I have been making new releases frequently. Make sure your package is up-to-date!
 ⚠️ Warning: This library is in active early development! No guarantees are made for backward compatibility. The library is NOT intended to be production-ready.
 
 ## Is this for me?
