@@ -1,5 +1,9 @@
 # alana-utilities
-Quick utilities for myself, mostly geared toward interacting with LLMs.
+Quick utilities mostly geared toward interacting with LLMs.
+
+Designed for myself (hence the name), but hopefully helpful for you too!
+
+API design still in flux!
 
 Install Instructions
 ```
