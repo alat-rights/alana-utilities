@@ -7,26 +7,29 @@ from anthropic.types import Message, MessageParam
 from alana import globals
 
 def get_xml_pattern(tag: str):
+    """Return regex pattern for getting contents of <tag/> XML tags."""
     if tag.count('<') > 0 or tag.count('>') > 0:
         raise ValueError("No '>' or '<' allowed in get_xml tag name!")
     return rf"<{tag}>(.*?)</{tag}>"
 
 def get_xml(tag: str, content: str) -> List[str]:
+    """Return contents of <tag/> XML tags."""
     pattern: str = get_xml_pattern(tag=tag)
     matches: List[Any] = re.findall(pattern=pattern, string=content, flags=re.DOTALL)
     return matches
 
-def remove_xml(tag: str = "reasoning", content: str = "") -> str:
+def remove_xml(tag: str = "reasoning", content: str = "", repl: str="") -> str:
+    """Return a copy of `content` with <tag/> XML elements (both content and tag) replaced with `repl` (default "")."""
     if tag.count('<') > 0 or tag.count('>') > 0:
         raise ValueError("No '>' or '<' allowed in get_xml tag name!")
     if content == "":
         red(var="`remove_xml`: Empty string provided as `content`.") # TODO: Improve error logging
     pattern: str = rf"<{tag}>.*?</{tag}>" # NOTE: Removed group matching, so can't use `get_xml_pattern`
-    output: str = re.sub(pattern=pattern, repl="", string=content, flags=re.DOTALL)
+    output: str = re.sub(pattern=pattern, repl=repl, string=content, flags=re.DOTALL)
     return output
 
-
 def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[MessageParam]] = None, append: bool = True, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens = 1024, temperature=0.3, loud=True, **kwargs) -> str:
+    """Generate a response from Claude. Return the text content of Claude's response."""
     if user is None and messages is None:
         raise ValueError("No prompt provided! `user` and `messages` are both None.")
 
@@ -65,6 +68,7 @@ def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[Me
     return output.content[0].text
 
 def gen_msg(messages: List[MessageParam], system: str = "", model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens = 1024, temperature=0.3, loud=True, **kwargs) -> Message:
+    """Generate a response from Claude. Return the Message object produced by the Anthropic API."""
     backend: str = globals.MODELS[globals.DEFAULT_MODEL]
     if model in globals.MODELS:
         backend = globals.MODELS[model]
@@ -95,6 +99,7 @@ def gen_msg(messages: List[MessageParam], system: str = "", model: str = globals
     return message
 
 def gen_examples_list(instruction: str, n_examples: int = 5, model: str = "sonnet", api_key: Optional[str] = None, max_tokens: int = 1024, temperature=0.3, **kwargs) -> List[str]:
+    """Generate a Python list of few-shot examples for a given natural language instruction."""
     system: str = globals.SYSTEM["few_shot"].format(n_examples=n_examples)
     user: str = globals.USER["few_shot"].format(instruction=instruction)
     if n_examples < 1:
@@ -104,11 +109,13 @@ def gen_examples_list(instruction: str, n_examples: int = 5, model: str = "sonne
     return get_xml(tag='example', content=model_output)
 
 def gen_examples(instruction: str, n_examples: int = 5, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=0.3, **kwargs) -> str:
+    """Generate a formatted string containing few-shot examples for a given natural language instruction."""
     examples: List[str] = gen_examples_list(instruction=instruction, n_examples=n_examples, model=model, api_key=api_key, max_tokens=max_tokens, temperature=temperature, **kwargs)
     formatted_examples: str = "\n<examples>\n<example>" + '</example>\n<example>'.join(examples) + "</example>\n</examples>"
     return formatted_examples
 
 def gen_prompt(instruction: str, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=0.3, **kwargs) -> Dict[str, Union[str, List]]:
+    """Meta-prompter! Generate a prompt given an arbitrary instruction."""
     meta_system_prompt: str = globals.SYSTEM["gen_prompt"]
     meta_prompt: str = globals.USER["gen_prompt"].format(instruction=instruction)
 
@@ -122,6 +129,7 @@ def gen_prompt(instruction: str, model: str = globals.DEFAULT_MODEL, api_key: Op
     return {"system": system_prompt, "user": user_prompt, "full": full_output}
 
 def pretty_print(var: Any, loud: bool = True, model: str = "sonnet") -> str:
+    """Use Sonnet to pretty-print an arbitrary variable."""
     system = globals.SYSTEM["pretty_print"]
     user = globals.USER["pretty_print"].format(var=f'{var}')
 
