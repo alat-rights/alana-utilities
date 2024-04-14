@@ -18,7 +18,7 @@ This library is mostly designed for me (hence the name), but I hope they're help
 ## Philosophy:
 - Programming is too slow! This is doubly true when you're interacting with LLMs. By building nice utilities with sane defaults, I hope to speed up my (and maybe your) workflow.
 - I make trade-offs to speed up the developer experience:
-  - I do not try hard to anticipate future upstream API changes. I'm ok with breaking backward compatibility to make my functions more concise and more usable.
+  - I do not try hard to anticipate future upstream API changes. I'm also ok with breaking backward compatibility to make my functions more concise and more usable.
   - Usability > Principles. While I don't relish in it, I'm ok with breaking conventions designed for large production libraries if it speeds up programmers who use `alana`. The priority is to make the library intuitive and fast.
   - I don't try to serve every use-case.
 
