@@ -8,6 +8,7 @@ pip install alana
 
 Features
 - Easy color print: `alana.red`, `alana.green`, `alana.blue`, `alana.yellow`, `alana.cyan`
+- Easy pretty print with Sonnnet (or an Anthropic model of your choice): `alana.pretty_print`
 - Make it easier to use the Anthropic API:
   - `alana.gen`, for easy Claude generations
   - `alana.gen_examples`, `alana.gen_examples_list` for generating few-shot examples
