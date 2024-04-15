@@ -1,4 +1,6 @@
-# alana-utilities (Utilities Library for LLM-Heavy Workflows)
+# ⚙︎ alana-utilities 
+
+Simple utilities library to make prototyping with Claude faster and more fun.
 
 ## Install Instructions
 ```
@@ -8,10 +10,16 @@ pip install alana
 
 ⚠️ Warning: This library is in active early development! No guarantees are made for backward compatibility. The library is NOT production-ready.
 
-## Motivating Examples:
-(I tested these, and tried to make sure my code was idiomatic in all cases. Sorry if I messed up! Please report any issues to `h i ( a t ) [pip package name for this library] dot computer`.)
+## Usage Instructions
+1. Import via `import alana` or, if you're brave, `from alana import *`.
+2. Make your Anthropic API key available as an environment variable. `os.environ["ANTHROPIC_API_KEY"] = "..."`
 
-Continuing a list of messages using Anthropic API (adapted from [Anthropic API documentation](https://docs.anthropic.com/claude/reference/messages_post):
+The documentation for this project is hosted at [utils.alana.computer](https://utils.alana.computer).
+
+## Motivating Examples
+(I tested these, and tried to make sure my code was idiomatic in all cases. Sorry if I messed up! Please report any issues to `h i ( a t ) [pip package name for this library] dot computer`).
+
+Continuing a list of messages using Anthropic API (adapted from [Anthropic API documentation](https://docs.anthropic.com/claude/reference/messages_post)):
 ```
 import anthropic
 from anthropic.types import MessageParam
@@ -62,7 +70,7 @@ Here are some questions to ask yourself when considering whether to use this lib
   - Note: This library *strongly* assumes this use-case! e.g. `alana.gen` actually writes to the console by default (you can disable this with `loud=False`).
 - Do the features appeal to you?
 
-## Philosophy:
+## Philosophy
 - Programming is too slow! This is doubly true when you're interacting with LLMs. By building nice utilities with sane defaults, I hope to speed up my (and maybe your) workflow.
 - I make trade-offs to speed up the developer experience:
   - I do not try hard to anticipate future upstream API changes. I'm also ok with breaking backward compatibility to make my functions more concise and more usable.
@@ -70,27 +78,27 @@ Here are some questions to ask yourself when considering whether to use this lib
   - I don't try to serve every use-case.
 - Simplicity is key. This library strives to be readable and straightforward.
 
-## Features:
+## Features
 - Easy color print: `alana.red`, `alana.green`, `alana.blue`, `alana.yellow`, `alana.cyan`. Try `alana.green("Hello!")`
 - Easy pretty print with Sonnet (or an Anthropic model of your choice): `alana.pretty_print`. Try `alana.pretty_print(t.arange(16, device='cpu').reshape(2,2,4))`
 - Make it easier to use the Anthropic API:
-  - `alana.gen`, for easy Claude generations. Try `alana.gen(user="Hello, Claude!")`. You can pass in a `messages` parameter either in place of or together with a `user` parameter. ⚠️ `messages` support is not thoroughly tested yet!
+  - `alana.gen`, for easy Claude generations. Try `alana.gen(user="Hello, Claude!")`. You can pass in a `messages` parameter (a list of anthropic.types.MessageParams) either in place of or together with a `user` parameter.
+  - `alana.respond`, easily appending a user message to a list of MessageParams!
   - `alana.gen_examples`, `alana.gen_examples_list` for generating few-shot examples.
   - `alana.gen_prompt`, for easy prompt generation (meta-prompt).
   - `alana.get_xml`, for using regex to get XML tag contents from model outputs. ⚠️ Regex parsing of XML may be unreliable!
-  - `alana.remove_xml` to strip certain XML tag-enclosed content from a string (along with the tags). This is primarily intended to get rid of "<reasoning>...</reasoning>" strings. ⚠️ Regex parsing of XML may be unreliable! This function has not been thoroughly tested yet!
+  - `alana.remove_xml` to strip certain XML tag-enclosed content from a string (along with the tags). This is primarily intended to get rid of "<reasoning>...</reasoning>" strings. ⚠️ Regex parsing of XML may be unreliable!
 - A bunch of aliases (Try: `alana.few_shot`, `alana.n_shot`, or `alana.xml`)
 
-## Testing:
+## Testing
 There are simple tests written with `unittest`. I am working on extending the test suite.
 
 ```
 $ python simple_tests.py
 ```
 
-## Coming Soon:
+## Coming Soon
 - Generating alternative prompts given a prompt
-- Better support for multi-turn prompting
 - OpenAI model support
 - Support for automatic "are you sure"/"are you confused" multi-turn prompting
 - Automatic error checking (are there mistakes in this code, sanity checking of model outputs)
