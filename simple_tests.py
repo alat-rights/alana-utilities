@@ -71,7 +71,7 @@ class TestFunctions(unittest.TestCase):
         self.assertEqual(first=response.stop_reason, second="end_turn") # NOTE: This is potential source of flake.
         self.assertEqual(first=response.role, second="assistant")
         self.assertEqual(first=response.type, second="message")
-        self.assertEqual(first=response.model, second=globals.MODELS[model])
+        self.assertEqual(first=response.model, second=globals.MODELS[model]) # type: ignore
 
     @flaky(max_runs=1, min_passes=1)
     def test_gen_msg_with_custom_args(self):
@@ -91,7 +91,7 @@ class TestFunctions(unittest.TestCase):
         self.assertEqual(first=response.role, second="assistant")
         self.assertEqual(first=response.type, second="message")
         self.assertEqual(first=response.stop_sequence, second=".") # NOTE: This is potential source of flake.
-        self.assertEqual(first=response.model, second=globals.MODELS[model])
+        self.assertEqual(first=response.model, second=globals.MODELS[model]) # type: ignore
         
     @flaky(max_runs=1, min_passes=1)
     def test_gen_msg_with_invalid_model(self):
