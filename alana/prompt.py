@@ -57,7 +57,7 @@ def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[Me
         model (str, optional): The name of the model to use. Defaults to globals.DEFAULT_MODEL.
         api_key (Optional[str], optional): The API key to use for authentication. Defaults to None (if None, uses os.environ["ANTHROPIC_API_KEY]).
         max_tokens (int, optional): The maximum number of tokens to generate in the response. Defaults to 1024.
-        temperature (float, optional): The temperature value for controlling the randomness of the generated response. Defaults to 0.3.
+        temperature (float, optional): The temperature value for controlling the randomness of the generated response.
         loud (bool, optional): Whether to print verbose output. Defaults to True.
         **kwargs: Additional keyword arguments to pass to the underlying generation function.
 
@@ -128,7 +128,7 @@ def gen_msg(messages: List[MessageParam], system: str = "", model: str = globals
         model (str, optional): The name of the model to use. Defaults to globals.DEFAULT_MODEL.
         api_key (Optional[str], optional): The API key to use for authentication. Defaults to None.
         max_tokens (int, optional): The maximum number of tokens to generate in the response. Defaults to 1024.
-        temperature (float, optional): The temperature value for controlling the randomness of the generated response. Defaults to 0.3.
+        temperature (float, optional): The temperature value for controlling the randomness of the generated response.
         loud (bool, optional): Whether to print verbose output. Defaults to True.
         **kwargs: Additional keyword arguments to pass to the Anthropic API.
 
@@ -189,7 +189,7 @@ def gen_examples_list(instruction: str, n_examples: int = 5, model: str = global
         model (str, optional): The name of the model to use. Defaults to `globals.DEFAULT_MODEL`.
         api_key (Optional[str], optional): The API key to use for authentication. Defaults to None.
         max_tokens (int, optional): The maximum number of tokens to generate in the response. Defaults to 1024.
-        temperature (float, optional): The temperature value for controlling the randomness of the generated response. Defaults to 0.3.
+        temperature (float, optional): The temperature value for controlling the randomness of the generated response.
         **kwargs: Additional keyword arguments to pass to the `gen` function (`gen` passes kwargs to the Anthropic API).
 
     Returns:
@@ -230,7 +230,7 @@ def gen_examples(instruction: str, n_examples: int = 5, model: str = globals.DEF
         model (str, optional): The name of the model to use. Defaults to globals.DEFAULT_MODEL.
         api_key (Optional[str], optional): The API key to use for authentication. Defaults to None.
         max_tokens (int, optional): The maximum number of tokens to generate in the response. Defaults to 1024.
-        temperature (float, optional): The temperature value for controlling the randomness of the generated response. Defaults to 0.3.
+        temperature (float, optional): The temperature value for controlling the randomness of the generated response.
         **kwargs: Additional keyword arguments to pass to the `gen_examples_list` function (passed to Anthropic API).
 
     Returns:
@@ -263,7 +263,7 @@ def gen_prompt(instruction: str, model: str = globals.DEFAULT_MODEL, api_key: Op
         model (str, optional): The name of the model to use. Defaults to globals.DEFAULT_MODEL.
         api_key (Optional[str], optional): The API key to use for authentication. Defaults to None.
         max_tokens (int, optional): The maximum number of tokens to generate in the response. Defaults to 1024.
-        temperature (float, optional): The temperature value for controlling the randomness of the generated response. Defaults to 0.3.
+        temperature (float, optional): The temperature value for controlling the randomness of the generated response.
         **kwargs: Additional keyword arguments to pass to the `gen` function.
 
     Returns:
