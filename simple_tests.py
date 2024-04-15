@@ -101,7 +101,7 @@ class TestFunctions(unittest.TestCase):
         messages: List[MessageParam] = [MessageParam(role="user", content="Test message")]
         response: Message = gen_msg(messages, model="not_a_model", system="Respond with the phrase `Test response`", temperature=0.0)
         self.assertEqual(first=response.content[0].text, second="Test response")
-        self.assertEqual(first=response.model, second=globals.DEFAULT_MODEL)
+        self.assertEqual(first=response.model, second=globals.DEFAULT_MODEL) # type: ignore
         self.assertEqual(len(messages), second=1)
     
     @flaky(max_runs=2, min_passes=1)
