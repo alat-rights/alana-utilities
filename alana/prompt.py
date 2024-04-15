@@ -88,7 +88,7 @@ def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[Me
     if messages is None:
         assert user is not None  # To be stricter, type(user) == str
         messages=[
-            MessageParam(role="user", content=user), # type: ignore
+            MessageParam(role="user", content=user),
         ]
     elif user is not None:
         assert messages is not None  # To be stricter, messages is List[MessageParam]
@@ -105,6 +105,7 @@ def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[Me
     
     if append == True:
         if messages[-1]["role"] == "assistant":  # NOTE: Anthropic API does not allow non-alternating roles (raises Err400). Let's enforce this.
+            # NOTE: messages[-1]["content"] is assistant output, so should be `str`, since Anthropic API (as of Apr 16 2024) only supports text output!
             existing_assistant_content: str = messages[-1]["content"] # type: ignore
             assistant_content: str = existing_assistant_content + output.content[0].text
             messages.pop()
