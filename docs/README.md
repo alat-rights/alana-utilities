@@ -55,6 +55,7 @@ print(messages)  # [{'role': 'user', 'content': 'Hello, Claude!'}, {'role': 'ass
 This library is mostly designed for me (hence the name), but they might be helpful for you too!
 
 Here are some questions to ask yourself when considering whether to use this library:
+
 - Do you interact with LLMs? (Currently, only Anthropic LLMs are supported).
 - Do you value conciseness?
 - Are you writing **non-production prototype code**, where 1, occassional bugs and behavioral changes are acceptable, and 2, developer ergonomics are more important than performance?
