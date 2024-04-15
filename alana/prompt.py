@@ -216,7 +216,7 @@ def gen_examples_list(instruction: str, n_examples: int = 5, model: str = global
     system: str = globals.SYSTEM["few_shot"].format(n_examples=n_examples)
     user: str = globals.USER["few_shot"].format(instruction=instruction)
     if n_examples < 1:
-        red(var="Too few examples provided! Trying anyway...")
+        red(var="Too few examples requested! Trying anyway...")
 
     model_output: str = gen(user=user, system=system, model=model, api_key=api_key, max_tokens=max_tokens, temperature=temperature, **kwargs)
     return get_xml(tag='example', content=model_output)
@@ -308,7 +308,7 @@ def gen_prompt(instruction: str, model: str = globals.DEFAULT_MODEL, api_key: Op
         user_prompt = user_prompt[0]
     return {"system": system_prompt, "user": user_prompt, "full": full_output}
 
-def pretty_print(var: Any, loud: bool = True, model: str = "sonnet") -> str:
+def pretty_print(var: Any, loud: bool = True, model: str = "sonnet", **kwargs) -> str:
     """Pretty-print an arbitrary variable. By default, uses Sonnet (not globals.DEFAULT_MODEL).
 
     Args:
@@ -349,7 +349,7 @@ def pretty_print(var: Any, loud: bool = True, model: str = "sonnet") -> str:
     system = globals.SYSTEM["pretty_print"]
     user = globals.USER["pretty_print"].format(var=f'{var}')
 
-    string: str = gen(user=user, system=system, model=model, loud=False) # NOTE: We just don't log pretty print model outputs
+    string: str = gen(user=user, system=system, model=model, loud=False, **kwargs) # NOTE: We just don't log pretty print model outputs
     pretty: Union[List[str], str] = get_xml(tag="pretty", content=string)
     if len(pretty) == 0:
         raise ValueError("`pretty_print`: XML parsing error! Number of <pretty/> tags is 0.")
