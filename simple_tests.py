@@ -3,6 +3,7 @@ import unittest
 from unittest.mock import patch
 from anthropic.types import Message, MessageParam, ContentBlock, Usage
 from alana import *
+from flaky import flaky
 
 class TestFunctions(unittest.TestCase):
     def test_get_xml_pattern(self):
@@ -58,6 +59,33 @@ class TestFunctions(unittest.TestCase):
         self.assertEqual(first=messages[2]["content"], second="Say Hello")
         for i in range(4):
             self.assertEqual(first=messages[i]["role"], second=["user", "assistant", "user", "assistant"][i])
+    
+    @flaky(max_runs=3)
+    def test_gen_msg_with_default_args(self):
+        messages = [MessageParam(role="user", content="Test message. Respond with 'Test response'")]
+        response = gen_msg(messages, model="haiku")
+        self.assertEqual(response.content[0].text, "Test response")
+
+    @flaky(max_runs=3)
+    def test_gen_msg_with_custom_args(self):
+        messages = [MessageParam(role="user", content="Ping.")]
+        response = gen_msg(
+            messages,
+            system="When the user says Ping, respond with 'Pong. Pong.'.",
+            model="sonnet",
+            max_tokens=500,
+            temperature=0.5,
+            loud=False,
+            stop_sequences=['.']
+        )
+        self.assertEqual(response.content[0].text, "Pong")
+        
+    @flaky(max_runs=3)
+    def test_gen_msg_with_invalid_model(self):
+        messages = [MessageParam(role="user", content="Test message")]
+        response = gen_msg(messages, model="not_a_model", system="Respond with the phrase `Test response`")
+        
+        self.assertEqual(response.content[0].text, "Test response")
 
 if __name__ == "__main__":
     unittest.main()
