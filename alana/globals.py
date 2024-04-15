@@ -12,7 +12,7 @@ MODELS: Dict[str, str] = {
     'claude-instant-1.2' : 'claude-instant-1.2'
 }
 
-DEFAULT_MODEL = "opus"
+DEFAULT_MODEL = "claude-3-opus-20240229"
 
 SYSTEM: Dict[Literal["few_shot", "gen_prompt", "pretty_print"], str] = {}
 
