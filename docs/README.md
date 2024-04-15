@@ -8,24 +8,6 @@ pip install alana
 
 ⚠️ Warning: This library is in active early development! No guarantees are made for backward compatibility. The library is NOT production-ready.
 
-## Is this for me?
-This library is mostly designed for me (hence the name), but they might be helpful for you too!
-
-Here are some questions to ask yourself when considering whether to use this library:
-- Do you interact with LLMs? (Currently, only Anthropic LLMs are supported).
-- Do you value conciseness?
-- Are you writing **non-production prototype code**, where 1, occassional bugs and behavioral changes are acceptable, and 2, developer ergonomics are more important than performance?
-  - Note: This library *strongly* assumes this use-case! e.g. `alana.gen` actually writes to the console by default (you can disable this with `loud=False`).
-- Do the features appeal to you?
-
-## Philosophy:
-- Programming is too slow! This is doubly true when you're interacting with LLMs. By building nice utilities with sane defaults, I hope to speed up my (and maybe your) workflow.
-- I make trade-offs to speed up the developer experience:
-  - I do not try hard to anticipate future upstream API changes. I'm also ok with breaking backward compatibility to make my functions more concise and more usable.
-  - Usability > Principles. While I don't relish in it, I'm ok with breaking conventions designed for large production libraries if it speeds up programmers who use `alana`. The priority is to make the library intuitive and fast.
-  - I don't try to serve every use-case.
-- Simplicity is key. This library strives to be readable and straightforward.
-
 ## Motivating Examples:
 (I tested these, and tried to make sure my code was idiomatic in all cases. Sorry if I messed up! Please report any issues to `h i ( a t ) [pip package name for this library] dot computer`.)
 
@@ -68,6 +50,24 @@ messages = []
 alana.gen(user="Hello, Claude!", messages=messages)
 print(messages)  # [{'role': 'user', 'content': 'Hello, Claude!'}, {'role': 'assistant', 'content': "Hello! It's nice to meet you. How are you doing today?"}]
 ```
+
+## Is this for me?
+This library is mostly designed for me (hence the name), but they might be helpful for you too!
+
+Here are some questions to ask yourself when considering whether to use this library:
+- Do you interact with LLMs? (Currently, only Anthropic LLMs are supported).
+- Do you value conciseness?
+- Are you writing **non-production prototype code**, where 1, occassional bugs and behavioral changes are acceptable, and 2, developer ergonomics are more important than performance?
+  - Note: This library *strongly* assumes this use-case! e.g. `alana.gen` actually writes to the console by default (you can disable this with `loud=False`).
+- Do the features appeal to you?
+
+## Philosophy:
+- Programming is too slow! This is doubly true when you're interacting with LLMs. By building nice utilities with sane defaults, I hope to speed up my (and maybe your) workflow.
+- I make trade-offs to speed up the developer experience:
+  - I do not try hard to anticipate future upstream API changes. I'm also ok with breaking backward compatibility to make my functions more concise and more usable.
+  - Usability > Principles. While I don't relish in it, I'm ok with breaking conventions designed for large production libraries if it speeds up programmers who use `alana`. The priority is to make the library intuitive and fast.
+  - I don't try to serve every use-case.
+- Simplicity is key. This library strives to be readable and straightforward.
 
 ## Features:
 - Easy color print: `alana.red`, `alana.green`, `alana.blue`, `alana.yellow`, `alana.cyan`. Try `alana.green("Hello!")`
