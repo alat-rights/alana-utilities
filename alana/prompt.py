@@ -349,7 +349,7 @@ def pretty_print(var: Any, loud: bool = True, model: str = "sonnet") -> str:
     system = globals.SYSTEM["pretty_print"]
     user = globals.USER["pretty_print"].format(var=f'{var}')
 
-    string: str = gen(user=user, system=system, model=model)
+    string: str = gen(user=user, system=system, model=model, loud=False) # NOTE: We just don't log pretty print model outputs
     pretty: Union[List[str], str] = get_xml(tag="pretty", content=string)
     if len(pretty) == 0:
         raise ValueError("`pretty_print`: XML parsing error! Number of <pretty/> tags is 0.")
