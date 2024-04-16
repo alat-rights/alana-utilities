@@ -261,7 +261,7 @@ def gen_prompt(instruction: str, messages: Optional[List[MessageParam]] = None, 
     
     Args:
         instruction (str): The arbitrary instruction for which to generate a prompt.
-        messages (Optional[List[MessageParam]]): A list wherein to receive the prompt! STRONGLY RECOMMEND TO BE EMPTY.
+        messages (Optional[List[MessageParam]]): !!!!EXPERIMENTAL!!!! A list wherein to receive a 2-turn prompt generation thread! STRONGLY RECOMMEND TO BE EMPTY.
         model (str, optional): The name of the model to use. Defaults to globals.DEFAULT_MODEL.
         api_key (Optional[str], optional): The API key to use for authentication. Defaults to None.
         max_tokens (int, optional): The maximum number of tokens to generate in the response. Defaults to 1024.
@@ -301,6 +301,8 @@ def gen_prompt(instruction: str, messages: Optional[List[MessageParam]] = None, 
     meta_system_prompt: str = globals.SYSTEM["gen_prompt"]
     meta_prompt: str = globals.USER["gen_prompt"].format(instruction=instruction)
 
+    if messages is not None:
+        yellow(var="`alana.prompt.gen_prompt`: Please note that `messages` support in `gen_prompt` is experimental!")
     if messages is not None and len(messages) > 0:
         red("`alana.prompt.gen_prompt`: Non-empty `messages` received! In `gen_prompt`, it's STRONGLY recommended to pass in an empty list for `messages`.")
 
