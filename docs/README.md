@@ -93,7 +93,7 @@ Here are some questions to ask yourself when considering whether to use this lib
 ## Testing
 There are simple tests written with `unittest`. I am working on extending the test suite.
 
-You may need to provide your Anthropic API key is an environment variable to run all of the unit tests. See [#10](https://github.com/alat-rights/alana-utilities/issues/10).
+You may need to provide your Anthropic API key as an environment variable to run all of the unit tests. See [#10](https://github.com/alat-rights/alana-utilities/issues/10).
 
 ```
 $ python simple_tests.py
