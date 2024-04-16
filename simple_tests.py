@@ -32,6 +32,14 @@ class TestFunctions(unittest.TestCase):
         self.assertEqual(first=len(updated_messages), second=3)
         self.assertEqual(first=updated_messages[-1]["role"], second="user")
         self.assertEqual(first=updated_messages[-1]["content"], second="Hello")
+
+        messages: list[MessageParam] = [MessageParam(role="user", content="Hi")]
+        updated_messages: List[MessageParam] = respond(content="Hello", messages=messages, role="assistant")
+        self.assertEqual(first=len(updated_messages), second=2)
+        self.assertEqual(first=updated_messages[0]["role"], second="user")
+        self.assertEqual(first=updated_messages[0]["content"], second="Hi")
+        self.assertEqual(first=updated_messages[1]["role"], second="assistant")
+        self.assertEqual(first=updated_messages[1]["content"], second="Hello")
     
     def test_gen(self):
         """Check that `gen` correctly appends to `messages`."""
