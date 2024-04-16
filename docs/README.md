@@ -8,7 +8,7 @@ pip install alana
 
 ⚠️ Warning: This library is in active early development! No guarantees are made for backward compatibility. The library is NOT production-ready.
 
-## Motivating Examples:
+## Motivating Examples
 (I tested these, and tried to make sure my code was idiomatic in all cases. Sorry if I messed up! Please report any issues to `h i ( a t ) [pip package name for this library] dot computer`).
 
 Continuing a list of messages using Anthropic API (adapted from [Anthropic API documentation](https://docs.anthropic.com/claude/reference/messages_post)):
@@ -62,7 +62,7 @@ Here are some questions to ask yourself when considering whether to use this lib
   - Note: This library *strongly* assumes this use-case! e.g. `alana.gen` actually writes to the console by default (you can disable this with `loud=False`).
 - Do the features appeal to you?
 
-## Philosophy:
+## Philosophy
 - Programming is too slow! This is doubly true when you're interacting with LLMs. By building nice utilities with sane defaults, I hope to speed up my (and maybe your) workflow.
 - I make trade-offs to speed up the developer experience:
   - I do not try hard to anticipate future upstream API changes. I'm also ok with breaking backward compatibility to make my functions more concise and more usable.
@@ -70,7 +70,7 @@ Here are some questions to ask yourself when considering whether to use this lib
   - I don't try to serve every use-case.
 - Simplicity is key. This library strives to be readable and straightforward.
 
-## Features:
+## Features
 - Easy color print: `alana.red`, `alana.green`, `alana.blue`, `alana.yellow`, `alana.cyan`. Try `alana.green("Hello!")`
 - Easy pretty print with Sonnet (or an Anthropic model of your choice): `alana.pretty_print`. Try `alana.pretty_print(t.arange(16, device='cpu').reshape(2,2,4))`
 - Make it easier to use the Anthropic API:
@@ -82,14 +82,14 @@ Here are some questions to ask yourself when considering whether to use this lib
   - `alana.respond`, easily appending a user message to a list of MessageParams!
 - A bunch of aliases (Try: `alana.few_shot`, `alana.n_shot`, or `alana.xml`)
 
-## Testing:
+## Testing
 There are simple tests written with `unittest`. I am working on extending the test suite.
 
 ```
 $ python simple_tests.py
 ```
 
-## Coming Soon:
+## Coming Soon
 - Generating alternative prompts given a prompt
 - Better support for multi-turn prompting
 - OpenAI model support
