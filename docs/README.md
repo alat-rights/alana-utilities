@@ -1,4 +1,4 @@
-# alana-utilities (Utilities Library for LLM-Heavy Workflows)
+# ⚙︎ alana-utilities (Utilities Library for LLM-Heavy Workflows)
 
 ## Install Instructions
 ```
