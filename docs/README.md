@@ -1,6 +1,6 @@
 # ⚙︎ alana-utilities 
 
-Batteries-included utilities library to make building with Claude faster and more fun.
+Batteries-included utilities library to make prototyping with Claude faster and more fun.
 
 ## Install Instructions
 ```
