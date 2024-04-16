@@ -1,4 +1,6 @@
-# ⚙︎ alana-utilities (Utilities Library for LLM-Heavy Workflows)
+# ⚙︎ alana-utilities 
+
+Batteries-included utilities library to make building with Claude faster and more fun.
 
 ## Install Instructions
 ```
