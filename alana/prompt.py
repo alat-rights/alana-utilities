@@ -256,11 +256,12 @@ def gen_examples(instruction: str, n_examples: int = 5, model: str = globals.DEF
     formatted_examples: str = "\n<examples>\n<example>" + '</example>\n<example>'.join(examples) + "</example>\n</examples>"
     return formatted_examples
 
-def gen_prompt(instruction: str, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=1.0, **kwargs: Any) -> Dict[Literal["system", "user", "full"], Union[str, List]]:
+def gen_prompt(instruction: str, messages: Optional[List[MessageParam]] = None, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=1.0, **kwargs: Any) -> Dict[Literal["system", "user", "full"], Union[str, List]]:
     """Meta-prompter! Generate a prompt given an arbitrary instruction.
     
     Args:
         instruction (str): The arbitrary instruction for which to generate a prompt.
+        messages (Optional[List[MessageParam]]): A list wherein to receive the prompt! STRONGLY RECOMMEND TO BE EMPTY.
         model (str, optional): The name of the model to use. Defaults to globals.DEFAULT_MODEL.
         api_key (Optional[str], optional): The API key to use for authentication. Defaults to None.
         max_tokens (int, optional): The maximum number of tokens to generate in the response. Defaults to 1024.
@@ -300,7 +301,10 @@ def gen_prompt(instruction: str, model: str = globals.DEFAULT_MODEL, api_key: Op
     meta_system_prompt: str = globals.SYSTEM["gen_prompt"]
     meta_prompt: str = globals.USER["gen_prompt"].format(instruction=instruction)
 
-    full_output: str = gen(user=meta_prompt, system=meta_system_prompt, model=model, api_key=api_key, max_tokens=max_tokens, temperature=temperature, **kwargs)
+    if messages is not None and len(messages) > 0:
+        red("`alana.prompt.gen_prompt`: Non-empty `messages` received! In `gen_prompt`, it's STRONGLY recommended to pass in an empty list for `messages`.")
+
+    full_output: str = gen(user=meta_prompt, messages=messages, system=meta_system_prompt, model=model, api_key=api_key, max_tokens=max_tokens, temperature=temperature, **kwargs)
     system_prompt: Union[List[str], str] = get_xml(tag="system_prompt", content=full_output)
     if len(system_prompt) >= 1:
         system_prompt = system_prompt[0]
