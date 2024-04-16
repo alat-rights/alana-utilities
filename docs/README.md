@@ -10,6 +10,9 @@ pip install alana
 
 ⚠️ Warning: This library is in active early development! No guarantees are made for backward compatibility. The library is NOT production-ready.
 
+## Documentation
+The documentation for this project is hosted at [utils.alana.computer](https://utils.alana.computer).
+
 ## Motivating Examples
 (I tested these, and tried to make sure my code was idiomatic in all cases. Sorry if I messed up! Please report any issues to `h i ( a t ) [pip package name for this library] dot computer`).
 
