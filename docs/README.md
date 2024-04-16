@@ -79,12 +79,12 @@ Here are some questions to ask yourself when considering whether to use this lib
 - Easy color print: `alana.red`, `alana.green`, `alana.blue`, `alana.yellow`, `alana.cyan`. Try `alana.green("Hello!")`
 - Easy pretty print with Sonnet (or an Anthropic model of your choice): `alana.pretty_print`. Try `alana.pretty_print(t.arange(16, device='cpu').reshape(2,2,4))`
 - Make it easier to use the Anthropic API:
-  - `alana.gen`, for easy Claude generations. Try `alana.gen(user="Hello, Claude!")`. You can pass in a `messages` parameter either in place of or together with a `user` parameter.
+  - `alana.gen`, for easy Claude generations. Try `alana.gen(user="Hello, Claude!")`. You can pass in a `messages` parameter (a list of anthropic.types.MessageParams) either in place of or together with a `user` parameter.
+  - `alana.respond`, easily appending a user message to a list of MessageParams!
   - `alana.gen_examples`, `alana.gen_examples_list` for generating few-shot examples.
   - `alana.gen_prompt`, for easy prompt generation (meta-prompt).
   - `alana.get_xml`, for using regex to get XML tag contents from model outputs. ⚠️ Regex parsing of XML may be unreliable!
   - `alana.remove_xml` to strip certain XML tag-enclosed content from a string (along with the tags). This is primarily intended to get rid of "<reasoning>...</reasoning>" strings. ⚠️ Regex parsing of XML may be unreliable!
-  - `alana.respond`, easily appending a user message to a list of MessageParams!
 - A bunch of aliases (Try: `alana.few_shot`, `alana.n_shot`, or `alana.xml`)
 
 ## Testing
@@ -96,7 +96,6 @@ $ python simple_tests.py
 
 ## Coming Soon
 - Generating alternative prompts given a prompt
-- Better support for multi-turn prompting
 - OpenAI model support
 - Support for automatic "are you sure"/"are you confused" multi-turn prompting
 - Automatic error checking (are there mistakes in this code, sanity checking of model outputs)
