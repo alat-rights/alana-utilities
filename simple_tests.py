@@ -28,7 +28,7 @@ class TestFunctions(unittest.TestCase):
     def test_respond(self):
         """Check that respond correctly appends a user message."""
         messages: list[MessageParam] = [MessageParam(role="user", content="Hi"), MessageParam(role="assistant", content="Hi")]
-        updated_messages: List[MessageParam] = respond(user="Hello", messages=messages)
+        updated_messages: List[MessageParam] = respond(content="Hello", messages=messages)
         self.assertEqual(first=len(updated_messages), second=3)
         self.assertEqual(first=updated_messages[-1]["role"], second="user")
         self.assertEqual(first=updated_messages[-1]["content"], second="Hello")
@@ -134,7 +134,7 @@ class TestFunctions(unittest.TestCase):
         self.assertEqual(first=messages[-1]["role"], second="assistant")
         self.assertEqual(first=messages[-1]["content"], second="Hello! It's nice to meet you. How can I assist you today?")
         self.assertEqual(first=output, second=" today?")
-        respond(user="What is the name of your favorite Pokemon? Mine is Pikachu.", messages=messages)
+        respond(content="What is the name of your favorite Pokemon? Mine is Pikachu.", messages=messages)
         self.assertEqual(first=messages[-1]["role"], second="user")
         self.assertEqual(first=messages[-1]["content"], second="What is the name of your favorite Pokemon? Mine is Pikachu.")
         output = gen(messages=messages, temperature=0.0, model="sonnet")
@@ -144,7 +144,7 @@ class TestFunctions(unittest.TestCase):
         self.assertNotEqual(first=messages[-1]["content"], second=messages[-2]["content"])
         self.assertEqual(first=len(messages), second=4)
 
-        respond(user="One more response!", messages=messages)
+        respond(content="One more response!", messages=messages)
         self.assertEqual(first=len(messages), second=5)
         gen(messages=messages, append=False)
         self.assertEqual(first=len(messages), second=5)

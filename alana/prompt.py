@@ -28,12 +28,13 @@ def remove_xml(tag: str = "reasoning", content: str = "", repl: str="") -> str:
     output: str = re.sub(pattern=pattern, repl=repl, string=content, flags=re.DOTALL)
     return output
 
-def respond(user: str, messages: Optional[List[MessageParam]] = None) -> List[MessageParam]:
+def respond(content: str, messages: Optional[List[MessageParam]] = None, role: Literal["user", "assistant"] = "user") -> List[MessageParam]:
     """Append a user message to messages list.
     
     Args:
-        user (str): The newest user message content.
+        content (str): The newest message content.
         messages (Optional[List[MessageParam]]): A list of `anthropic.types.MessageParam` objects. The last MessageParam should be from assistant. If `messages` is None, we will populate it with exactly one MessageParam based on `user`.
+        role (Literal["user", "assistant"]): Corresponding source for the message!
     
     Returns:
         List[MessageParam]
@@ -41,8 +42,8 @@ def respond(user: str, messages: Optional[List[MessageParam]] = None) -> List[Me
     if messages is None:
         messages = []
     messages.append(MessageParam(
-        role='user',
-        content=user,
+        role=role,
+        content=content,
     ))
     return messages
 
