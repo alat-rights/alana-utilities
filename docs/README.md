@@ -10,7 +10,10 @@ pip install alana
 
 ⚠️ Warning: This library is in active early development! No guarantees are made for backward compatibility. The library is NOT production-ready.
 
-## Documentation
+## Usage Instructions
+1. Import via `import alana` or, if you're brave, `from alana import *`.
+2. Make your Anthropic API key available as an environment variable. `os.environ["ANTHROPIC_API_KEY"] = "..."`
+
 The documentation for this project is hosted at [utils.alana.computer](https://utils.alana.computer).
 
 ## Motivating Examples
