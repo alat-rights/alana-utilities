@@ -1,17 +1,17 @@
 import re
 import os
-import httpx
-from typing import List, Dict, Optional, Union, Literal, Any, TypedDict, Unpack
+from typing import List, Dict, Optional, Union, Literal, Any, TypedDict, Unpack, Tuple
 from anthropic import Anthropic, NotGiven
 from anthropic._types import Headers, Query, Body
-from anthropic.types import Message, MessageParam, message_create_params
+from anthropic.types import Message, MessageParam
+from anthropic.types.message_create_params import Metadata
 
 from alana.color import red, yellow
 from alana import globals
 
 
 class RequestParams(TypedDict, total=False):
-    metadata: message_create_params.Metadata | NotGiven
+    metadata: Metadata | NotGiven
     stop_sequences: List[str] | NotGiven
     stream: Literal[False] | Literal[True] | NotGiven
     top_k: int | NotGiven
@@ -19,7 +19,7 @@ class RequestParams(TypedDict, total=False):
     extra_headers: Headers | None
     extra_query: Query | None
     extra_body: Body | None
-    timeout: float | httpx.Timeout | None | NotGiven
+    timeout: float | Union[Optional[float], Tuple[Optional[float], Optional[float], Optional[float], Optional[float]]] | None | NotGiven
 
 
 def get_xml_pattern(tag: str):
