@@ -10,7 +10,7 @@ from alana.color import red, yellow
 from alana import globals
 
 
-class RequestParams(TypedDict):
+class RequestParams(TypedDict, total=False):
     metadata: message_create_params.Metadata | NotGiven
     stop_sequences: List[str] | NotGiven
     stream: Literal[False] | Literal[True] | NotGiven
