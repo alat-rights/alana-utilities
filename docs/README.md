@@ -1,5 +1,8 @@
 # ⚙︎ alana-utilities 
 
+
+<img style="text-align: center;" src="https://github.com/alat-rights/alana-utilities/assets/54920181/d58b866b-30fc-4697-98d3-63d3742a2198" alt="drawing" width="200"/>
+
 Simple utilities library to make prototyping with Claude faster and more fun.
 
 ## Install Instructions
