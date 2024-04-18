@@ -19,8 +19,9 @@ class RequestParams(TypedDict, total=False):
     extra_headers: Headers | None
     extra_query: Query | None
     extra_body: Body | None
+    # fmt: off
     timeout: float | Union[Optional[float], Tuple[Optional[float], Optional[float], Optional[float], Optional[float]]] | None | NotGiven
-
+    # fmt: on
 
 def get_xml_pattern(tag: str):
     """Return regex pattern for getting contents of <tag/> XML tags."""
