@@ -71,15 +71,14 @@ pip install alana
 The documentation for this project is hosted at [utils.alana.computer](https://utils.alana.computer).
 
 ## Is this for me?
-This library is mostly designed for me (hence the name), but they might be helpful for you too!
+This library is designed to make interacting with Claude fast and easy. It is primarily targetted toward people writing non-production, prototype code. It prioritizes developer ergonomics.
 
-Here are some questions to ask yourself when considering whether to use this library:
+It speeds up lots of things that I frequently find myself doing with Claude.
 
-- Do you interact with LLMs? (Currently, only Anthropic LLMs are supported).
-- Do you value conciseness?
-- Are you writing **non-production prototype code**, where 1, occassional bugs and behavioral changes are acceptable, and 2, developer ergonomics are more important than performance?
-  - Note: This library *strongly* assumes this use-case! e.g. `alana.gen` actually writes to the console by default (you can disable this with `loud=False`).
-- Do the features appeal to you?
+- Generating a response to a user and system prompt `alana.gen(user=..., system=...)`
+- Creating and/or extending a list of MessageParams `alana.respond(message_content, role="user")`
+- Extracting content from Claude's output using Regex `alana.get_xml(tag, content)`
+- Generate a prompt or a Python list of few-shot examples `alana.gen_prompt` & `alana.few_shot` respectively
 
 ## Philosophy
 - Programming is too slow! This is doubly true when you're interacting with LLMs. By building nice utilities with sane defaults, I hope to speed up my (and maybe your) workflow.
