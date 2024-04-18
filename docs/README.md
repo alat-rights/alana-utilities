@@ -3,7 +3,7 @@
 Simple utilities library to make prototyping with Claude faster and more fun.
 
 ## Install Instructions
-```
+```Python
 pip install alana
 ```
 🎵 Note: I have been making new releases frequently. Make sure your package is up-to-date!
@@ -20,7 +20,7 @@ The documentation for this project is hosted at [utils.alana.computer](https://u
 *I tested these, and I've tried to make sure my code was idiomatic in all cases. Sorry if I messed up! Please open a [GitHub issue](https://github.com/alat-rights/alana-utilities/issues) if you catch a mistake.*
 
 Continuing a list of messages using Anthropic API (adapted from [Anthropic API documentation](https://docs.anthropic.com/claude/reference/messages_post)):
-```
+```Python
 import anthropic
 from anthropic.types import MessageParam
 messages = [
@@ -44,7 +44,7 @@ print(messages)  # [{'role': 'user', 'content': 'Hello, Claude!'}, {'role': 'ass
 ```
 
 Equivalent `alana` code:
-```
+```Python
 import alana
 messages = []
 alana.gen(user="Hello, Claude!", messages=messages, model="opus", max_tokens=1024)
@@ -52,7 +52,7 @@ print(messages)  # [{'role': 'user', 'content': 'Hello, Claude!'}, {'role': 'ass
 ```
 
 Also, equivalent `alana` code thanks to defaults:
-```
+```Python
 import alana
 messages = []
 alana.gen(user="Hello, Claude!", messages=messages)
