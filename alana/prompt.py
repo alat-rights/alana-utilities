@@ -66,7 +66,7 @@ def respond(content: str, messages: Optional[List[MessageParam]] = None, role: L
 
 def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[MessageParam]] = None, append: bool = True, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens = 1024, temperature=1.0, loud=True, **kwargs: Unpack[RequestParams]) -> str:
     """Generate a response from Claude. Returns the text content (`str`) of Claude's response. If you want the Message object instead, use `gen_msg`.
-    
+ 
     Args:
         user (Optional[str], optional): The user's message content. Defaults to None.
         system (str, optional): The system message for Claude. Defaults to "".
@@ -120,7 +120,7 @@ def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[Me
 
     if len(output.content) == 0:
         raise ValueError(f"Claude did not provide a response. Stop reason: {output.stop_reason}. Full API response: {output}")
-    
+ 
     if append == True:
         if messages[-1]["role"] == "assistant":  # NOTE: Anthropic API does not allow non-alternating roles (raises Err400). Let's enforce this.
             # NOTE: messages[-1]["content"] is assistant output, so should be `str`, since Anthropic API (as of Apr 16 2024) only supports text output!
@@ -129,7 +129,7 @@ def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[Me
             messages.pop()
         else:
             assistant_content: str = output.content[0].text
-        
+ 
         messages.append(
             MessageParam(
                 role="assistant",
@@ -276,7 +276,7 @@ def gen_examples(instruction: str, n_examples: int = 5, model: str = globals.DEF
 
 def gen_prompt(instruction: str, messages: Optional[List[MessageParam]] = None, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=1.0, **kwargs: Unpack[RequestParams]) -> Dict[Literal["system", "user", "full"], Union[str, List]]:
     """Meta-prompter! Generate a prompt given an arbitrary instruction.
-    
+ 
     Args:
         instruction (str): The arbitrary instruction for which to generate a prompt.
         messages (Optional[List[MessageParam]]): !!!!EXPERIMENTAL!!!! A list wherein to receive a 2-turn prompt generation thread! STRONGLY RECOMMEND TO BE EMPTY.

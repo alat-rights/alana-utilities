@@ -1,26 +1,39 @@
-# ⚙︎ alana-utilities 
+<p align="center">
+  <img style="text-align: center;" src="https://github.com/alat-rights/alana-utilities/assets/54920181/d58b866b-30fc-4697-98d3-63d3742a2198" alt="drawing" width="250"/>
+</p>
+<p align="center">
+  <em>Make prototyping with Claude fast and easy.</em>
+</p>
+<h1 align="center">
+  alana-utilities 
+</h1>
+<p align="center">
+  <a href="https://pypi.org/project/alana/" target="_blank">
+      <img alt="Python" src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" />
+  </a>
+  <a href="https://pypi.org/project/alana/" target="_blank">
+      <img alt="Python" src="https://img.shields.io/pypi/v/alana?style=for-the-badge&color=3670A0" />
+  </a>
+</p>
 
-Simple utilities library to make prototyping with Claude faster and more fun.
+## What is alana-utilities?
+This library is designed to make interacting with Claude fast and easy. It is primarily targetted toward people writing non-production, prototype code. It prioritizes developer ergonomics.
 
-## Install Instructions
-```
-pip install alana
-```
-🎵 Note: I have been making new releases frequently. Make sure your package is up-to-date!
+It speeds up lots of things that I frequently find myself doing with Claude.
 
-⚠️ Warning: This library is in active early development! No guarantees are made for backward compatibility. The library is NOT production-ready.
+- Generating a response to a user and system prompt `alana.gen(user=..., system=...)`
+- Creating and/or extending a list of MessageParams `alana.respond(message_content, role="user")`
+- Extracting content from Claude's output using Regex `alana.get_xml(tag, content)`
+- Generate a prompt or a Python list of few-shot examples `alana.gen_prompt` & `alana.few_shot` respectively
 
-## Usage Instructions
-1. Import via `import alana` or, if you're brave, `from alana import *`.
-2. Make your Anthropic API key available as an environment variable. `os.environ["ANTHROPIC_API_KEY"] = "..."`
-
-The documentation for this project is hosted at [utils.alana.computer](https://utils.alana.computer).
+## What is alana?
+I am alana :)
 
 ## Motivating Examples
 *I tested these, and I've tried to make sure my code was idiomatic in all cases. Sorry if I messed up! Please open a [GitHub issue](https://github.com/alat-rights/alana-utilities/issues) if you catch a mistake.*
 
 Continuing a list of messages using Anthropic API (adapted from [Anthropic API documentation](https://docs.anthropic.com/claude/reference/messages_post)):
-```
+```Python
 import anthropic
 from anthropic.types import MessageParam
 messages = [
@@ -44,7 +57,7 @@ print(messages)  # [{'role': 'user', 'content': 'Hello, Claude!'}, {'role': 'ass
 ```
 
 Equivalent `alana` code:
-```
+```Python
 import alana
 messages = []
 alana.gen(user="Hello, Claude!", messages=messages, model="opus", max_tokens=1024)
@@ -52,23 +65,26 @@ print(messages)  # [{'role': 'user', 'content': 'Hello, Claude!'}, {'role': 'ass
 ```
 
 Also, equivalent `alana` code thanks to defaults:
-```
+```Python
 import alana
 messages = []
 alana.gen(user="Hello, Claude!", messages=messages)
 print(messages)  # [{'role': 'user', 'content': 'Hello, Claude!'}, {'role': 'assistant', 'content': "Hello! It's nice to meet you. How are you doing today?"}]
 ```
 
-## Is this for me?
-This library is mostly designed for me (hence the name), but they might be helpful for you too!
+## Install Instructions
+```Python
+pip install alana
+```
+🎵 Note: I have been making new releases frequently. Make sure your package is up-to-date!
 
-Here are some questions to ask yourself when considering whether to use this library:
+⚠️ Warning: This library is in active early development! No guarantees are made for backward compatibility. The library is NOT production-ready.
 
-- Do you interact with LLMs? (Currently, only Anthropic LLMs are supported).
-- Do you value conciseness?
-- Are you writing **non-production prototype code**, where 1, occassional bugs and behavioral changes are acceptable, and 2, developer ergonomics are more important than performance?
-  - Note: This library *strongly* assumes this use-case! e.g. `alana.gen` actually writes to the console by default (you can disable this with `loud=False`).
-- Do the features appeal to you?
+## Usage Instructions
+1. Import via `import alana` or, if you're brave, `from alana import *`.
+2. Make your Anthropic API key available as an environment variable. `os.environ["ANTHROPIC_API_KEY"] = "..."`
+
+The documentation for this project is hosted at [utils.alana.computer](https://utils.alana.computer).
 
 ## Philosophy
 - Programming is too slow! This is doubly true when you're interacting with LLMs. By building nice utilities with sane defaults, I hope to speed up my (and maybe your) workflow.
