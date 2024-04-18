@@ -3,20 +3,14 @@
 <p align="center">
   <img style="text-align: center;" src="https://github.com/alat-rights/alana-utilities/assets/54920181/d58b866b-30fc-4697-98d3-63d3742a2198" alt="drawing" width="200"/>
 </p>
-
-## Install Instructions
-```Python
-pip install alana
-```
-🎵 Note: I have been making new releases frequently. Make sure your package is up-to-date!
-
-⚠️ Warning: This library is in active early development! No guarantees are made for backward compatibility. The library is NOT production-ready.
-
-## Usage Instructions
-1. Import via `import alana` or, if you're brave, `from alana import *`.
-2. Make your Anthropic API key available as an environment variable. `os.environ["ANTHROPIC_API_KEY"] = "..."`
-
-The documentation for this project is hosted at [utils.alana.computer](https://utils.alana.computer).
+<p align="center">
+  <em>Make prototyping with Claude fast and easy.</em>
+</p>
+<p align="center">
+    <a href="https://pypi.org/project/alana/" target="_blank">
+        <img alt="Python" src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" />
+    </a>
+</p>
 
 ## Motivating Examples
 *I tested these, and I've tried to make sure my code was idiomatic in all cases. Sorry if I messed up! Please open a [GitHub issue](https://github.com/alat-rights/alana-utilities/issues) if you catch a mistake.*
@@ -60,6 +54,20 @@ messages = []
 alana.gen(user="Hello, Claude!", messages=messages)
 print(messages)  # [{'role': 'user', 'content': 'Hello, Claude!'}, {'role': 'assistant', 'content': "Hello! It's nice to meet you. How are you doing today?"}]
 ```
+
+## Install Instructions
+```Python
+pip install alana
+```
+🎵 Note: I have been making new releases frequently. Make sure your package is up-to-date!
+
+⚠️ Warning: This library is in active early development! No guarantees are made for backward compatibility. The library is NOT production-ready.
+
+## Usage Instructions
+1. Import via `import alana` or, if you're brave, `from alana import *`.
+2. Make your Anthropic API key available as an environment variable. `os.environ["ANTHROPIC_API_KEY"] = "..."`
+
+The documentation for this project is hosted at [utils.alana.computer](https://utils.alana.computer).
 
 ## Is this for me?
 This library is mostly designed for me (hence the name), but they might be helpful for you too!
