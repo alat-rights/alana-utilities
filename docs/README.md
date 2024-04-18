@@ -13,6 +13,15 @@
     </a>
 </p>
 
+## Is this for me?
+This library is designed to make interacting with Claude fast and easy. It is primarily targetted toward people writing non-production, prototype code. It prioritizes developer ergonomics.
+
+It speeds up lots of things that I frequently find myself doing with Claude.
+
+- Generating a response to a user and system prompt `alana.gen(user=..., system=...)`
+- Creating and/or extending a list of MessageParams `alana.respond(message_content, role="user")`
+- Extracting content from Claude's output using Regex `alana.get_xml(tag, content)`
+- Generate a prompt or a Python list of few-shot examples `alana.gen_prompt` & `alana.few_shot` respectively
 ## Motivating Examples
 *I tested these, and I've tried to make sure my code was idiomatic in all cases. Sorry if I messed up! Please open a [GitHub issue](https://github.com/alat-rights/alana-utilities/issues) if you catch a mistake.*
 
@@ -69,16 +78,6 @@ pip install alana
 2. Make your Anthropic API key available as an environment variable. `os.environ["ANTHROPIC_API_KEY"] = "..."`
 
 The documentation for this project is hosted at [utils.alana.computer](https://utils.alana.computer).
-
-## Is this for me?
-This library is designed to make interacting with Claude fast and easy. It is primarily targetted toward people writing non-production, prototype code. It prioritizes developer ergonomics.
-
-It speeds up lots of things that I frequently find myself doing with Claude.
-
-- Generating a response to a user and system prompt `alana.gen(user=..., system=...)`
-- Creating and/or extending a list of MessageParams `alana.respond(message_content, role="user")`
-- Extracting content from Claude's output using Regex `alana.get_xml(tag, content)`
-- Generate a prompt or a Python list of few-shot examples `alana.gen_prompt` & `alana.few_shot` respectively
 
 ## Philosophy
 - Programming is too slow! This is doubly true when you're interacting with LLMs. By building nice utilities with sane defaults, I hope to speed up my (and maybe your) workflow.
