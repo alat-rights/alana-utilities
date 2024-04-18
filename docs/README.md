@@ -1,19 +1,22 @@
-# ⚙︎ alana-utilities 
-
 <p align="center">
-  <img style="text-align: center;" src="https://github.com/alat-rights/alana-utilities/assets/54920181/d58b866b-30fc-4697-98d3-63d3742a2198" alt="drawing" width="200"/>
+  <img style="text-align: center;" src="https://github.com/alat-rights/alana-utilities/assets/54920181/d58b866b-30fc-4697-98d3-63d3742a2198" alt="drawing" width="250"/>
 </p>
 <p align="center">
   <em>Make prototyping with Claude fast and easy.</em>
 </p>
+<h1 align="center">
+  alana-utilities 
+</h1>
 <p align="center">
-    <a href="https://pypi.org/project/alana/" target="_blank">
-        <img alt="Python" src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" />
+  <a href="https://pypi.org/project/alana/" target="_blank">
+      <img alt="Python" src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" />
+  </a>
+  <a href="https://pypi.org/project/alana/" target="_blank">
         <img alt="Python" src="https://img.shields.io/pypi/v/alana?style=for-the-badge&color=3670A0" />
     </a>
 </p>
 
-## Is this for me?
+## What is alana-utilities?
 This library is designed to make interacting with Claude fast and easy. It is primarily targetted toward people writing non-production, prototype code. It prioritizes developer ergonomics.
 
 It speeds up lots of things that I frequently find myself doing with Claude.
@@ -22,6 +25,10 @@ It speeds up lots of things that I frequently find myself doing with Claude.
 - Creating and/or extending a list of MessageParams `alana.respond(message_content, role="user")`
 - Extracting content from Claude's output using Regex `alana.get_xml(tag, content)`
 - Generate a prompt or a Python list of few-shot examples `alana.gen_prompt` & `alana.few_shot` respectively
+
+## What is alana?
+I am alana :)
+
 ## Motivating Examples
 *I tested these, and I've tried to make sure my code was idiomatic in all cases. Sorry if I messed up! Please open a [GitHub issue](https://github.com/alat-rights/alana-utilities/issues) if you catch a mistake.*
 
