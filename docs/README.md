@@ -95,6 +95,11 @@ There are simple tests written with `unittest`. I am working on extending the te
 
 You may need to provide your Anthropic API key as an environment variable to run all of the unit tests. See [#10](https://github.com/alat-rights/alana-utilities/issues/10).
 
+First install flaky plugin with `pip`:
+```
+$ pip install flaky
+```
+Next run:
 ```
 $ python simple_tests.py
 ```

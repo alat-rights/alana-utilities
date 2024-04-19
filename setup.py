@@ -3,7 +3,7 @@ import os
 
 setup(
    name='alana',
-   version='0.0.5',  # Update the version number as needed
+   version='0.0.6',  # Update the version number as needed
    author='Alana',
    author_email='hi@alana.computer',
    description='Utilities for Alana, and maybe you too. Mostly geared toward LLM-heavy workflows.',
@@ -91,6 +91,5 @@ print(messages)  # [{'role': 'user', 'content': 'Hello, Claude!'}, {'role': 'ass
    install_requires=[
       'anthropic',
       'colorama',
-      'flaky',
    ],
 )
