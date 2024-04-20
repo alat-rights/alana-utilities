@@ -9,7 +9,7 @@ from anthropic.types.message_create_params import Metadata
 from alana.color import red, yellow
 from alana import globals
 
-
+'''
 class RequestParams(TypedDict, total=False):
     metadata: Metadata | NotGiven
     stop_sequences: List[str] | NotGiven
@@ -20,7 +20,7 @@ class RequestParams(TypedDict, total=False):
     extra_query: Query | None
     extra_body: Body | None
     timeout: float | Union[Optional[float], Tuple[Optional[float], Optional[float], Optional[float], Optional[float]]] | None | NotGiven
-
+'''
 
 def get_xml_pattern(tag: str):
     """Return regex pattern for getting contents of <tag/> XML tags."""
@@ -90,7 +90,7 @@ def _append_assistant_message(messages, output):
 
     respond(content=assistant_content, messages=messages, role="assistant")
 
-def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[MessageParam]] = None, append: bool = True, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens = 1024, temperature=1.0, loud=True, **kwargs: Unpack[RequestParams]) -> str: # type: ignore
+def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[MessageParam]] = None, append: bool = True, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens = 1024, temperature=1.0, loud=True, **kwargs: Any) -> str: # type: ignore
     """Generate a response from Claude. Returns the text content (`str`) of Claude's response. If you want the Message object instead, use `gen_msg`.
  
     Args:
@@ -132,7 +132,7 @@ def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[Me
         _append_assistant_message(messages=messages, output=output)
     return output.content[0].text
 
-def gen_msg(messages: List[MessageParam], system: str = "", model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens = 1024, temperature=1.0, loud=True, **kwargs: Unpack[RequestParams]) -> Message:
+def gen_msg(messages: List[MessageParam], system: str = "", model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens = 1024, temperature=1.0, loud=True, **kwargs: Any) -> Message:
     """Generate a response from Claude using the Anthropic API.
 
     Args:
@@ -193,7 +193,7 @@ def gen_msg(messages: List[MessageParam], system: str = "", model: str = globals
 
     return message
 
-def gen_examples_list(instruction: str, n_examples: int = 5, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=1.0, **kwargs: Unpack[RequestParams]) -> List[str]:
+def gen_examples_list(instruction: str, n_examples: int = 5, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=1.0, **kwargs: Any) -> List[str]:
     """Uses Claude to generate a Python list of few-shot examples for a given natural language instruction.
 
     Args:
@@ -234,7 +234,7 @@ def gen_examples_list(instruction: str, n_examples: int = 5, model: str = global
     model_output: str = gen(user=user, system=system, model=model, api_key=api_key, max_tokens=max_tokens, temperature=temperature, **kwargs)
     return get_xml(tag='example', content=model_output)
 
-def gen_examples(instruction: str, n_examples: int = 5, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=1.0, **kwargs: Unpack[RequestParams]) -> str:
+def gen_examples(instruction: str, n_examples: int = 5, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=1.0, **kwargs: Any) -> str:
     """Generate a formatted string containing few-shot examples for a given natural language instruction. Uses `gen_examples_list`.
 
     Args:
@@ -268,7 +268,7 @@ def gen_examples(instruction: str, n_examples: int = 5, model: str = globals.DEF
     formatted_examples: str = "\n<examples>\n<example>" + '</example>\n<example>'.join(examples) + "</example>\n</examples>"
     return formatted_examples
 
-def gen_prompt(instruction: str, messages: Optional[List[MessageParam]] = None, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=1.0, **kwargs: Unpack[RequestParams]) -> Dict[Literal["system", "user", "full"], Union[str, List]]:
+def gen_prompt(instruction: str, messages: Optional[List[MessageParam]] = None, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=1.0, **kwargs: Any) -> Dict[Literal["system", "user", "full"], Union[str, List]]:
     """Meta-prompter! Generate a prompt given an arbitrary instruction.
  
     Args:
@@ -327,7 +327,7 @@ def gen_prompt(instruction: str, messages: Optional[List[MessageParam]] = None, 
         user_prompt = user_prompt[0]
     return {"system": system_prompt, "user": user_prompt, "full": full_output}
 
-def pretty_print(var: Any, loud: bool = True, model: str = "sonnet", **kwargs: Unpack[RequestParams]) -> str:
+def pretty_print(var: Any, loud: bool = True, model: str = "sonnet", **kwargs: Any) -> str:
     """Pretty-print an arbitrary variable. By default, uses Sonnet (not globals.DEFAULT_MODEL).
 
     Args:
