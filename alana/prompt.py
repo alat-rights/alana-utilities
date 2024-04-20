@@ -63,7 +63,34 @@ def respond(content: str, messages: Optional[List[MessageParam]] = None, role: L
     ))
     return messages
 
-def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[MessageParam]] = None, append: bool = True, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens = 1024, temperature=1.0, loud=True, **kwargs: Unpack[RequestParams]) -> str:
+def _construct_messages(user_message: Optional[str], messages: Optional[List[MessageParam]]): # type: ignore
+        if user_message is None and messages is None:
+            raise ValueError("No prompt provided! `user` and `messages` are both None.")
+        if messages is None:
+            assert user_message is not None  # To be stricter, type(user) == str
+            messages: List[MessageParam] = respond(content=user_message, role="user")
+        elif user_message is not None:
+            assert messages is not None  # To be stricter, messages is List[MessageParam]
+            if len(messages) >= 1 and messages[-1]["role"] == "user":
+                raise ValueError("`gen`: Bad request! Roles must be alternating. Last message in `messages` is from user, but `user` provided.")
+            respond(content=user_message, messages=messages, role="user")
+        return messages
+
+def _append_assistant_message(messages, output):
+    if len(output.content) == 0:
+        raise ValueError(f"Assistant did not provide a response. Stop reason: {output.stop_reason}. Full API response: {output}")
+
+    if messages[-1]["role"] == "assistant":  # NOTE: Anthropic API does not allow non-alternating roles (raises Err400). Let's enforce this.
+        # NOTE: messages[-1]["content"] is assistant output, so should be `str`, since Anthropic API (as of Apr 16 2024) only supports text output!
+        existing_assistant_content: str = messages[-1]["content"] # type: ignore
+        assistant_content: str = existing_assistant_content + output.content[0].text
+        messages.pop()
+    else:
+        assistant_content: str = output.content[0].text
+
+    respond(content=assistant_content, messages=messages, role="assistant")
+
+def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[MessageParam]] = None, append: bool = True, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens = 1024, temperature=1.0, loud=True, **kwargs: Any) -> str: # type: ignore
     """Generate a response from Claude. Returns the text content (`str`) of Claude's response. If you want the Message object instead, use `gen_msg`.
  
     Args:
@@ -99,42 +126,10 @@ def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[Me
         >>> print(response)
         "Hello! How can I assist you today?"
     """
-    if user is None and messages is None:
-        raise ValueError("No prompt provided! `user` and `messages` are both None.")
-
-    if messages is None:
-        assert user is not None  # To be stricter, type(user) == str
-        messages=[
-            MessageParam(role="user", content=user),
-        ]
-    elif user is not None:
-        assert messages is not None  # To be stricter, messages is List[MessageParam]
-        if len(messages) >= 1 and messages[-1]["role"] == "user":
-            raise ValueError("`gen`: Bad request! Roles must be alternating. Last message in `messages` is from user, but `user` provided.")
-        messages.append(
-            MessageParam(role="user", content=user)  # TODO: Check that non-alternating roles are ok (e.g. user, assistant, assistant)
-        )
-
+    messages: List[MessageParam] = _construct_messages(user_message=user, messages=messages)
     output: Message = gen_msg(system=system, messages=messages, model=model, api_key=api_key, max_tokens=max_tokens, loud=loud, temperature=temperature, **kwargs)
-
-    if len(output.content) == 0:
-        raise ValueError(f"Claude did not provide a response. Stop reason: {output.stop_reason}. Full API response: {output}")
- 
     if append == True:
-        if messages[-1]["role"] == "assistant":  # NOTE: Anthropic API does not allow non-alternating roles (raises Err400). Let's enforce this.
-            # NOTE: messages[-1]["content"] is assistant output, so should be `str`, since Anthropic API (as of Apr 16 2024) only supports text output!
-            existing_assistant_content: str = messages[-1]["content"] # type: ignore
-            assistant_content: str = existing_assistant_content + output.content[0].text
-            messages.pop()
-        else:
-            assistant_content: str = output.content[0].text
- 
-        messages.append(
-            MessageParam(
-                role="assistant",
-                content=assistant_content
-            )
-        )
+        _append_assistant_message(messages=messages, output=output)
     return output.content[0].text
 
 def gen_msg(messages: List[MessageParam], system: str = "", model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens = 1024, temperature=1.0, loud=True, **kwargs: Unpack[RequestParams]) -> Message:
