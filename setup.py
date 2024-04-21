@@ -91,5 +91,6 @@ print(messages)  # [{'role': 'user', 'content': 'Hello, Claude!'}, {'role': 'ass
    install_requires=[
       'anthropic',
       'colorama',
+      'numpy'
    ],
 )
