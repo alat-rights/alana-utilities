@@ -213,5 +213,18 @@ class TestFunctions(unittest.TestCase):
         self.assertIn(member="30", container=pretty_output)
         self.assertIn(member="'New York'", container=pretty_output)
 
+class AsyncTest(unittest.IsolatedAsyncioTestCase):
+    
+    @flaky(max_runs=1, min_passes=1)
+    async def test_agen(self):
+        """Check that `agen` correctly appends to `messages`."""
+        messages: list[MessageParam] = [MessageParam(role="user", content="Hi")]
+        await agen(messages=messages, model="haiku", system="Respond in Spanish", loud=False)
+        green(var=f"Confirm output in Spanish {messages[-1]['content']}")
+        self.assertEqual(first=len(messages), second=2)
+        self.assertEqual(first=messages[-1]["role"], second="assistant")
+        self.assertEqual(first=messages[0]["content"], second="Hi")
+        self.assertEqual(first=messages[0]["role"], second="user")
+ 
 if __name__ == "__main__":
     unittest.main()
