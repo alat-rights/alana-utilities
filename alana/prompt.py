@@ -1,15 +1,15 @@
 import re
 import os
 from typing import List, Dict, Optional, Union, Literal, Any, TypedDict, Unpack, Tuple
-from anthropic import Anthropic, NotGiven
-from anthropic._types import Headers, Query, Body
+from anthropic import Anthropic
+from anthropic._types import Headers, Query, Body, NotGiven
 from anthropic.types import Message, MessageParam
 from anthropic.types.message_create_params import Metadata
 
 from alana.color import red, yellow
 from alana import globals
 
-
+"""
 class RequestParams(TypedDict, total=False):
     metadata: Metadata | NotGiven
     stop_sequences: List[str] | NotGiven
@@ -19,15 +19,16 @@ class RequestParams(TypedDict, total=False):
     extra_headers: Headers | None
     extra_query: Query | None
     extra_body: Body | None
-    # fmt: off
     timeout: float | Union[Optional[float], Tuple[Optional[float], Optional[float], Optional[float], Optional[float]]] | None | NotGiven
-    # fmt: on
+"""
+
 
 def get_xml_pattern(tag: str):
     """Return regex pattern for getting contents of <tag/> XML tags."""
-    if tag.count('<') > 0 or tag.count('>') > 0:
+    if tag.count("<") > 0 or tag.count(">") > 0:
         raise ValueError("No '>' or '<' allowed in get_xml tag name!")
     return rf"<{tag}>(.*?)</{tag}>"
+
 
 def get_xml(tag: str, content: str) -> List[str]:
     """Return contents of <tag/> XML tags."""
@@ -35,38 +36,86 @@ def get_xml(tag: str, content: str) -> List[str]:
     matches: List[Any] = re.findall(pattern=pattern, string=content, flags=re.DOTALL)
     return matches
 
-def remove_xml(tag: str = "reasoning", content: str = "", repl: str="") -> str:
+
+def remove_xml(tag: str = "reasoning", content: str = "", repl: str = "") -> str:
     """Return a copy of `content` with <tag/> XML elements (both content and tag) replaced with `repl` (default "")."""
-    if tag.count('<') > 0 or tag.count('>') > 0:
+    if tag.count("<") > 0 or tag.count(">") > 0:
         raise ValueError("No '>' or '<' allowed in get_xml tag name!")
     if content == "":
-        red(var="`remove_xml`: Empty string provided as `content`.") # TODO: Improve error logging
-    pattern: str = rf"<{tag}>.*?</{tag}>" # NOTE: Removed group matching, so can't use `get_xml_pattern`
+        red(
+            var="`remove_xml`: Empty string provided as `content`."
+        )  # TODO: Improve error logging
+    pattern: str = (
+        rf"<{tag}>.*?</{tag}>"  # NOTE: Removed group matching, so can't use `get_xml_pattern`
+    )
     output: str = re.sub(pattern=pattern, repl=repl, string=content, flags=re.DOTALL)
     return output
 
-def respond(content: str, messages: Optional[List[MessageParam]] = None, role: Literal["user", "assistant"] = "user") -> List[MessageParam]:
+
+def respond(
+    content: str,
+    messages: Optional[List[MessageParam]] = None,
+    role: Literal["user", "assistant"] = "user",
+) -> List[MessageParam]:
     """Append a user message to messages list.
-    
+
     Args:
         content (str): The newest message content.
         messages (Optional[List[MessageParam]]): A list of `anthropic.types.MessageParam` objects. The last MessageParam should be from assistant. If `messages` is None, we will populate it with exactly one MessageParam based on `user`.
         role (Literal["user", "assistant"]): Corresponding source for the message!
-    
+
     Returns:
         List[MessageParam]
     """
     if messages is None:
         messages = []
-    messages.append(MessageParam(
-        role=role,
-        content=content,
-    ))
+    messages.append(
+        MessageParam(
+            role=role,
+            content=content,
+        )
+    )
     return messages
 
-def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[MessageParam]] = None, append: bool = True, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens = 1024, temperature=1.0, loud=True, **kwargs: Unpack[RequestParams]) -> str:
+
+def _construct_messages(user_message: Optional[str], messages: Optional[List[MessageParam]]):  # type: ignore
+    if user_message is None and messages is None:
+        raise ValueError("No prompt provided! `user` and `messages` are both None.")
+    if messages is None:
+        assert user_message is not None  # To be stricter, type(user) == str
+        messages: List[MessageParam] = respond(content=user_message, role="user")
+    elif user_message is not None:
+        assert messages is not None  # To be stricter, messages is List[MessageParam]
+        if len(messages) >= 1 and messages[-1]["role"] == "user":
+            raise ValueError(
+                "`gen`: Bad request! Roles must be alternating. Last message in `messages` is from user, but `user` provided."
+            )
+        respond(content=user_message, messages=messages, role="user")
+    return messages
+
+
+def _append_assistant_message(messages, output):
+    if len(output.content) == 0:
+        raise ValueError(
+            f"Assistant did not provide a response. Stop reason: {output.stop_reason}. Full API response: {output}"
+        )
+
+    if (
+        messages[-1]["role"] == "assistant"
+    ):  # NOTE: Anthropic API does not allow non-alternating roles (raises Err400). Let's enforce this.
+        # NOTE: messages[-1]["content"] is assistant output, so should be `str`, since Anthropic API (as of Apr 16 2024) only supports text output!
+        existing_assistant_content: str = messages[-1]["content"]  # type: ignore
+        assistant_content: str = existing_assistant_content + output.content[0].text
+        messages.pop()
+    else:
+        assistant_content: str = output.content[0].text
+
+    respond(content=assistant_content, messages=messages, role="assistant")
+
+
+def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[MessageParam]] = None, append: bool = True, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens=1024, temperature=1.0, loud=True, **kwargs: Any) -> str:  # type: ignore
     """Generate a response from Claude. Returns the text content (`str`) of Claude's response. If you want the Message object instead, use `gen_msg`.
- 
+
     Args:
         user (Optional[str], optional): The user's message content. Defaults to None.
         system (str, optional): The system message for Claude. Defaults to "".
@@ -100,45 +149,34 @@ def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[Me
         >>> print(response)
         "Hello! How can I assist you today?"
     """
-    if user is None and messages is None:
-        raise ValueError("No prompt provided! `user` and `messages` are both None.")
-
-    if messages is None:
-        assert user is not None  # To be stricter, type(user) == str
-        messages=[
-            MessageParam(role="user", content=user),
-        ]
-    elif user is not None:
-        assert messages is not None  # To be stricter, messages is List[MessageParam]
-        if len(messages) >= 1 and messages[-1]["role"] == "user":
-            raise ValueError("`gen`: Bad request! Roles must be alternating. Last message in `messages` is from user, but `user` provided.")
-        messages.append(
-            MessageParam(role="user", content=user)  # TODO: Check that non-alternating roles are ok (e.g. user, assistant, assistant)
-        )
-
-    output: Message = gen_msg(system=system, messages=messages, model=model, api_key=api_key, max_tokens=max_tokens, loud=loud, temperature=temperature, **kwargs)
-
-    if len(output.content) == 0:
-        raise ValueError(f"Claude did not provide a response. Stop reason: {output.stop_reason}. Full API response: {output}")
- 
+    messages: List[MessageParam] = _construct_messages(
+        user_message=user, messages=messages
+    )
+    output: Message = gen_msg(
+        system=system,
+        messages=messages,
+        model=model,
+        api_key=api_key,
+        max_tokens=max_tokens,
+        loud=loud,
+        temperature=temperature,
+        **kwargs,
+    )
     if append == True:
-        if messages[-1]["role"] == "assistant":  # NOTE: Anthropic API does not allow non-alternating roles (raises Err400). Let's enforce this.
-            # NOTE: messages[-1]["content"] is assistant output, so should be `str`, since Anthropic API (as of Apr 16 2024) only supports text output!
-            existing_assistant_content: str = messages[-1]["content"] # type: ignore
-            assistant_content: str = existing_assistant_content + output.content[0].text
-            messages.pop()
-        else:
-            assistant_content: str = output.content[0].text
- 
-        messages.append(
-            MessageParam(
-                role="assistant",
-                content=assistant_content
-            )
-        )
+        _append_assistant_message(messages=messages, output=output)
     return output.content[0].text
 
-def gen_msg(messages: List[MessageParam], system: str = "", model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens = 1024, temperature=1.0, loud=True, **kwargs: Unpack[RequestParams]) -> Message:
+
+def gen_msg(
+    messages: List[MessageParam],
+    system: str = "",
+    model: str = globals.DEFAULT_MODEL,
+    api_key: Optional[str] = None,
+    max_tokens=1024,
+    temperature=1.0,
+    loud=True,
+    **kwargs: Any,
+) -> Message:
     """Generate a response from Claude using the Anthropic API.
 
     Args:
@@ -174,7 +212,9 @@ def gen_msg(messages: List[MessageParam], system: str = "", model: str = globals
     if model in globals.MODELS:
         backend = globals.MODELS[model]
     else:
-        red(var=f"gen() -- Caution! model string not recognized; reverting to {globals.DEFAULT_MODEL=}.") # TODO: C'mon we can do better error logging than this
+        red(
+            var=f"gen() -- Caution! model string not recognized; reverting to {globals.DEFAULT_MODEL=}."
+        )  # TODO: C'mon we can do better error logging than this
 
     if api_key is None:
         api_key = os.environ.get("ANTHROPIC_API_KEY")
@@ -182,9 +222,9 @@ def gen_msg(messages: List[MessageParam], system: str = "", model: str = globals
         api_key=api_key,
     )
 
-    if 'stream' in kwargs:
+    if "stream" in kwargs:
         red(var="Streaming not supported! Disabling...")
-        kwargs['stream'] = False
+        kwargs["stream"] = False
 
     message: Message = client.messages.create(  # TODO: Enable streaming support
         max_tokens=max_tokens,
@@ -192,14 +232,23 @@ def gen_msg(messages: List[MessageParam], system: str = "", model: str = globals
         system=system,
         model=backend,
         temperature=temperature,
-        **kwargs
+        **kwargs,
     )
     if loud:
         yellow(var=message)
 
     return message
 
-def gen_examples_list(instruction: str, n_examples: int = 5, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=1.0, **kwargs: Unpack[RequestParams]) -> List[str]:
+
+def gen_examples_list(
+    instruction: str,
+    n_examples: int = 5,
+    model: str = globals.DEFAULT_MODEL,
+    api_key: Optional[str] = None,
+    max_tokens: int = 1024,
+    temperature=1.0,
+    **kwargs: Any,
+) -> List[str]:
     """Uses Claude to generate a Python list of few-shot examples for a given natural language instruction.
 
     Args:
@@ -237,10 +286,27 @@ def gen_examples_list(instruction: str, n_examples: int = 5, model: str = global
     if n_examples < 1:
         red(var="Too few examples requested! Trying anyway...")
 
-    model_output: str = gen(user=user, system=system, model=model, api_key=api_key, max_tokens=max_tokens, temperature=temperature, **kwargs)
-    return get_xml(tag='example', content=model_output)
+    model_output: str = gen(
+        user=user,
+        system=system,
+        model=model,
+        api_key=api_key,
+        max_tokens=max_tokens,
+        temperature=temperature,
+        **kwargs,
+    )
+    return get_xml(tag="example", content=model_output)
 
-def gen_examples(instruction: str, n_examples: int = 5, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=1.0, **kwargs: Unpack[RequestParams]) -> str:
+
+def gen_examples(
+    instruction: str,
+    n_examples: int = 5,
+    model: str = globals.DEFAULT_MODEL,
+    api_key: Optional[str] = None,
+    max_tokens: int = 1024,
+    temperature=1.0,
+    **kwargs: Any,
+) -> str:
     """Generate a formatted string containing few-shot examples for a given natural language instruction. Uses `gen_examples_list`.
 
     Args:
@@ -270,13 +336,34 @@ def gen_examples(instruction: str, n_examples: int = 5, model: str = globals.DEF
         <example>Deep in the enchanted forest, a group of talking animals gathered around a wise old oak tree to discuss a pressing matter...</example>
         </examples>
     """
-    examples: List[str] = gen_examples_list(instruction=instruction, n_examples=n_examples, model=model, api_key=api_key, max_tokens=max_tokens, temperature=temperature, **kwargs)
-    formatted_examples: str = "\n<examples>\n<example>" + '</example>\n<example>'.join(examples) + "</example>\n</examples>"
+    examples: List[str] = gen_examples_list(
+        instruction=instruction,
+        n_examples=n_examples,
+        model=model,
+        api_key=api_key,
+        max_tokens=max_tokens,
+        temperature=temperature,
+        **kwargs,
+    )
+    formatted_examples: str = (
+        "\n<examples>\n<example>"
+        + "</example>\n<example>".join(examples)
+        + "</example>\n</examples>"
+    )
     return formatted_examples
 
-def gen_prompt(instruction: str, messages: Optional[List[MessageParam]] = None, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens: int = 1024, temperature=1.0, **kwargs: Unpack[RequestParams]) -> Dict[Literal["system", "user", "full"], Union[str, List]]:
+
+def gen_prompt(
+    instruction: str,
+    messages: Optional[List[MessageParam]] = None,
+    model: str = globals.DEFAULT_MODEL,
+    api_key: Optional[str] = None,
+    max_tokens: int = 1024,
+    temperature=1.0,
+    **kwargs: Any,
+) -> Dict[Literal["system", "user", "full"], Union[str, List]]:
     """Meta-prompter! Generate a prompt given an arbitrary instruction.
- 
+
     Args:
         instruction (str): The arbitrary instruction for which to generate a prompt.
         messages (Optional[List[MessageParam]]): !!!!EXPERIMENTAL!!!! A list wherein to receive a 2-turn prompt generation thread! STRONGLY RECOMMEND TO BE EMPTY.
@@ -320,20 +407,40 @@ def gen_prompt(instruction: str, messages: Optional[List[MessageParam]] = None, 
     meta_prompt: str = globals.USER["gen_prompt"].format(instruction=instruction)
 
     if messages is not None:
-        yellow(var="`alana.prompt.gen_prompt`: Please note that `messages` support in `gen_prompt` is experimental!")
+        yellow(
+            var="`alana.prompt.gen_prompt`: Please note that `messages` support in `gen_prompt` is experimental!"
+        )
     if messages is not None and len(messages) > 0:
-        red("`alana.prompt.gen_prompt`: Non-empty `messages` received! In `gen_prompt`, it's STRONGLY recommended to pass in an empty list for `messages`.")
+        red(
+            "`alana.prompt.gen_prompt`: Non-empty `messages` received! In `gen_prompt`, it's STRONGLY recommended to pass in an empty list for `messages`."
+        )
 
-    full_output: str = gen(user=meta_prompt, messages=messages, system=meta_system_prompt, model=model, api_key=api_key, max_tokens=max_tokens, temperature=temperature, **kwargs)
-    system_prompt: Union[List[str], str] = get_xml(tag="system_prompt", content=full_output)
+    full_output: str = gen(
+        user=meta_prompt,
+        messages=messages,
+        system=meta_system_prompt,
+        model=model,
+        api_key=api_key,
+        max_tokens=max_tokens,
+        temperature=temperature,
+        **kwargs,
+    )
+    system_prompt: Union[List[str], str] = get_xml(
+        tag="system_prompt", content=full_output
+    )
     if len(system_prompt) >= 1:
         system_prompt = system_prompt[0]
     user_prompt: Union[List[str], str] = get_xml(tag="user_prompt", content=full_output)
-    if len(user_prompt) == 1:  # TODO: Find a saner way to handle this. E.g. delegate to a formatter model.
+    if (
+        len(user_prompt) == 1
+    ):  # TODO: Find a saner way to handle this. E.g. delegate to a formatter model.
         user_prompt = user_prompt[0]
     return {"system": system_prompt, "user": user_prompt, "full": full_output}
 
-def pretty_print(var: Any, loud: bool = True, model: str = "sonnet", **kwargs: Unpack[RequestParams]) -> str:
+
+def pretty_print(
+    var: Any, loud: bool = True, model: str = "sonnet", **kwargs: Any
+) -> str:
     """Pretty-print an arbitrary variable. By default, uses Sonnet (not globals.DEFAULT_MODEL).
 
     Args:
@@ -372,12 +479,16 @@ def pretty_print(var: Any, loud: bool = True, model: str = "sonnet", **kwargs: U
         }
     """
     system = globals.SYSTEM["pretty_print"]
-    user = globals.USER["pretty_print"].format(var=f'{var}')
+    user = globals.USER["pretty_print"].format(var=f"{var}")
 
-    string: str = gen(user=user, system=system, model=model, loud=False, **kwargs) # NOTE: We just don't log pretty print model outputs
+    string: str = gen(
+        user=user, system=system, model=model, loud=False, **kwargs
+    )  # NOTE: We just don't log pretty print model outputs
     pretty: Union[List[str], str] = get_xml(tag="pretty", content=string)
     if len(pretty) == 0:
-        raise ValueError("`pretty_print`: XML parsing error! Number of <pretty/> tags is 0.")
+        raise ValueError(
+            "`pretty_print`: XML parsing error! Number of <pretty/> tags is 0."
+        )
     else:
         pretty = pretty[-1]
     if loud:
