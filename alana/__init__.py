@@ -1,3 +1,18 @@
+"""
+`alana` includes five components:
+    - color
+    - prompt
+    - (experimental) prompt_async
+    - globals
+    - aliases
+
+`color` is a simple utilities library that provides color print using colorama.Fore.
+`prompt` is the meat of `alana`, including functions for interacting with Anthropic.
+(experimental) `prompt_async` uses AsyncAnthropic. Supports features like streaming.
+`globals` contains model names and prompts.
+`aliases` include alternate names for common functions.
+"""
+
 from alana.color import red, blue, green, yellow, cyan, pink, heatmap, scatter
 from alana.prompt import (
     get_xml,
