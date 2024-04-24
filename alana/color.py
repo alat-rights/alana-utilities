@@ -6,6 +6,7 @@ import numpy as np
 # A hacky utils library I put together for myself to write code faster. Please don't judge!
 # Feedback always welcome.
 
+
 # Debugging and logging!
 def log(loud: bool, output: str, logger: Optional[logging.Logger] = None) -> None:
     """
@@ -22,25 +23,38 @@ def log(loud: bool, output: str, logger: Optional[logging.Logger] = None) -> Non
     if logger:
         logger.info(output)
 
+
 def _gen_figname(title: str) -> str:
     import random
+
     id = random.randint(1000, 10000)
-    return title + '_' + str(object=id)
+    return title + "_" + str(object=id)
+
 
 def heatmap(array: np.ndarray, title: Optional[str] = None, save: bool = False) -> None:
     import matplotlib.pyplot as plt
+
     plt.figure(figsize=(8, 8))
-    plt.imshow(X=array, cmap='viridis', interpolation='nearest')
-    plt.colorbar(label='Value')
+    plt.imshow(X=array, cmap="viridis", interpolation="nearest")
+    plt.colorbar(label="Value")
     if title is None:
-        title = 'heatmap'
+        title = "heatmap"
     plt.title(label=title)
     if save:
         name: str = _gen_figname(title=title)
         plt.savefig(name)
 
-def scatter(x: np.ndarray, y: np.ndarray, x_label: str = 'X', y_label: str = 'Y', title: Optional[str] = None, save: bool = False) -> None:
+
+def scatter(
+    x: np.ndarray,
+    y: np.ndarray,
+    x_label: str = "X",
+    y_label: str = "Y",
+    title: Optional[str] = None,
+    save: bool = False,
+) -> None:
     import matplotlib.pyplot as plt
+
     fig, ax = plt.subplots()
     ax.scatter(x, y)
     ax.set_xlabel(x_label)
@@ -52,7 +66,9 @@ def scatter(x: np.ndarray, y: np.ndarray, x_label: str = 'X', y_label: str = 'Y'
         name = _gen_figname(title=title)
         plt.savefig(name)
 
-#def gen_interactive_plot_dangerous(inputs = ) -> None:
+
+# def gen_interactive_plot_dangerous(inputs = ) -> None:
+
 
 def red(var: Any, loud: bool = True, logger: Optional[logging.Logger] = None) -> str:
     """Print var in red, like `alana.blue`"""
@@ -60,11 +76,13 @@ def red(var: Any, loud: bool = True, logger: Optional[logging.Logger] = None) ->
     log(loud, output, logger)
     return output
 
+
 def green(var: Any, loud: bool = True, logger: Optional[logging.Logger] = None) -> str:
     """Print var in green, like `alana.blue`"""
     output = f"{Fore.GREEN} {var} {Style.RESET_ALL}"
     log(loud, output, logger)
     return output
+
 
 def blue(var: Any, loud: bool = True, logger: Optional[logging.Logger] = None) -> str:
     """
@@ -83,17 +101,20 @@ def blue(var: Any, loud: bool = True, logger: Optional[logging.Logger] = None) -
     log(loud, output, logger)
     return output
 
+
 def yellow(var: Any, loud: bool = True, logger: Optional[logging.Logger] = None) -> str:
     """Print var in yellow, like `alana.blue`"""
     output = f"{Fore.YELLOW} {var} {Style.RESET_ALL}"
     log(loud, output, logger)
     return output
 
+
 def cyan(var: Any, loud: bool = True, logger: Optional[logging.Logger] = None) -> str:
     """Print var in cyan, like `alana.blue`"""
     output = f"{Fore.CYAN} {var} {Style.RESET_ALL}"
     log(loud, output, logger)
     return output
+
 
 def pink(var: Any, loud: bool = True, logger: Optional[logging.Logger] = None) -> str:
     """Print var in pink, like `alana.blue`"""
