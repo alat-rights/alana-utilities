@@ -1,7 +1,5 @@
 from typing import Optional, List, Any
-
-from alana import get_xml, gen_examples_list, gen_examples, remove_xml
-from alana import globals
+from alana import get_xml, gen_examples_list, gen_examples, remove_xml, globals
 
 
 def grab(tag: str, content: str) -> List[str]:

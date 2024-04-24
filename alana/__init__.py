@@ -25,6 +25,8 @@ from alana.prompt import (
     remove_xml,
     gen_msg,
     respond,
+    _append_assistant_message,
+    _construct_messages,
 )
 from alana.prompt_async import agen, agen_msg
 from alana.aliases import (
@@ -38,4 +40,5 @@ from alana.aliases import (
 )
 import alana.globals
 import alana.color
-import alana.prompt
+
+# import alana.prompt

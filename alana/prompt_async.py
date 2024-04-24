@@ -1,11 +1,14 @@
+"""
+Synchronous Claude interactions, data structures, and output handling.
+"""
+
 import asyncio
-from anthropic import AsyncAnthropic
 import os
-from alana import yellow, red
-from alana import globals
-from alana.prompt import _append_assistant_message, _construct_messages
 from typing import List, Optional, Callable, Any
+from anthropic import AsyncAnthropic
 from anthropic.types import Message, MessageParam
+import alana
+from alana import globals
 
 client = AsyncAnthropic(
     # This is the default and can be omitted
@@ -46,7 +49,7 @@ async def agen_msg(
     if model in globals.MODELS:
         backend = globals.MODELS[model]
     else:
-        red(
+        alana.red(
             var=f"gen() -- Caution! model string not recognized; reverting to {globals.DEFAULT_MODEL=}."
         )  # TODO: C'mon we can do better error logging than this
 
@@ -83,14 +86,14 @@ async def agen_msg(
         message = await s.get_final_message()
 
     if loud:
-        yellow(message)
+        alana.yellow(message)
 
     return message
 
 
 async def agen(user: Optional[str] = None, system: str = "", messages: Optional[List[MessageParam]] = None, append: bool = True, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens=1024, temperature=1.0, stream_action: Optional[Callable] = lambda x: print(x, end="", flush=True), loud=False, **kwargs: Any) -> str:  # type: ignore
     """Experimental. Async version of gen. Invoke with `asyncio.run(agen)`"""
-    messages: List[MessageParam] = _construct_messages(
+    messages: List[MessageParam] = alana._construct_messages(
         user_message=user, messages=messages
     )
     output: Message = await agen_msg(
@@ -105,5 +108,5 @@ async def agen(user: Optional[str] = None, system: str = "", messages: Optional[
         **kwargs,
     )
     if append == True:
-        _append_assistant_message(messages=messages, output=output)
+        alana._append_assistant_message(messages=messages, output=output)
     return output.content[0].text
