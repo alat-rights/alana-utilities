@@ -13,23 +13,6 @@ client = AsyncAnthropic(
 )
 
 
-async def main() -> None:
-    message = await client.messages.create(
-        max_tokens=1024,
-        messages=[
-            {
-                "role": "user",
-                "content": "Hello, Claude",
-            }
-        ],
-        model="claude-3-opus-20240229",
-    )
-    print(message.content)
-
-
-asyncio.run(main())
-
-
 async def agen_msg(
     messages: List[MessageParam],
     system: str = "",
