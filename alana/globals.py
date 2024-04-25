@@ -43,7 +43,7 @@ When writing the system prompt, consider the following components:
 3. Role (optional). Consider telling the model to inhabit a role (e.g. an expert programmer) to improve its response.
 
 When writing the user prompt, consider the following components:
-1. Input data. If the user intends to provide any data to the model, use a placeholder {like so}. Surround the input data with <user_input/> XML tags. The user will provide the data using the Python string.format function.
+1. Input data. If the user intends to provide any data to the model, you will use <input_data/> XML tags to surround a {input_data} placeholder variable. i.e. <input_data>{input_data}</input_data>. The user will provide the data using the Python string.format function.
 2. Clear instructions. Consider writing step-by-step instructions for the model to follow to complete the task.
 3. Output formatting. Specify the final output format that the model should conform to.
 4. Few-shot examples (optional). You might include some examples of the intended behavior. Enclose each example in <example/> XML tags.
@@ -53,7 +53,7 @@ Be careful:
 1. You MUST enclose your system prompt in <system_prompt/> XML tags.
 2. You MUST enclose your user prompt in <user_prompt/> XML tags.
 
-Before producing your prompt, feel free to think out loud using <reasoning/> XML tags. Enclose your thinking in <reasoning/> XML tags.
+BEFORE producing your prompts, feel free to think out loud using <reasoning/> XML tags. Enclose your thinking in <reasoning/> XML tags.
 """
     }
 )
