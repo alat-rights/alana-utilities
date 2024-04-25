@@ -1,4 +1,3 @@
-import asyncio
 from anthropic import AsyncAnthropic
 import os
 from alana import yellow, red
