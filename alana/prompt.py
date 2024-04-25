@@ -413,17 +413,22 @@ def gen_prompt(
             "`alana.prompt.gen_prompt`: Non-empty `messages` received! In `gen_prompt`, it's STRONGLY recommended to pass in an empty list for `messages`."
         )
 
-    full_output: str = gen(
-        user=meta_prompt,
-        messages=messages,
-        system=meta_system_prompt,
-        model=model,
-        api_key=api_key,
-        max_tokens=max_tokens,
-        temperature=temperature,
-        stop_sequences=["</user_prompt>",],
-        **kwargs,
-    ) + "</user_prompt>"
+    full_output: str = (
+        gen(
+            user=meta_prompt,
+            messages=messages,
+            system=meta_system_prompt,
+            model=model,
+            api_key=api_key,
+            max_tokens=max_tokens,
+            temperature=temperature,
+            stop_sequences=[
+                "</user_prompt>",
+            ],
+            **kwargs,
+        )
+        + "</user_prompt>"
+    )
     system_prompt: Union[List[str], str] = get_xml(
         tag="system_prompt", content=full_output
     )
