@@ -70,7 +70,7 @@ async def agen_msg(
     return message
 
 
-async def agen(user: Optional[str] = None, system: str = "", messages: Optional[List[MessageParam]] = None, append: bool = True, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens=1024, temperature=1.0, stream_action: Optional[Callable] = lambda x: print(x, end="", flush=True), loud=False, **kwargs: Any) -> str: # type: ignore
+async def agen(user: Optional[str] = None, system: str = "", messages: Optional[List[MessageParam]] = None, append: bool = True, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens=1024, temperature=1.0, stream_action: Optional[Callable] = lambda x: print(x, end="", flush=True), loud=False, **kwargs: Any) -> str:  # type: ignore
     """Experimental. Async version of gen. Invoke with `asyncio.run(agen)`"""
     messages: List[MessageParam] = _construct_messages(
         user_message=user, messages=messages
@@ -89,6 +89,7 @@ async def agen(user: Optional[str] = None, system: str = "", messages: Optional[
     if append == True:
         _append_assistant_message(messages=messages, output=output)
     return output.content[0].text
+
 
 async def agen_examples_list(
     instruction: str,
@@ -265,17 +266,22 @@ async def agen_prompt(
             "`alana.prompt.gen_prompt`: Non-empty `messages` received! In `gen_prompt`, it's STRONGLY recommended to pass in an empty list for `messages`."
         )
 
-    full_output: str = await agen(
-        user=meta_prompt,
-        messages=messages,
-        system=meta_system_prompt,
-        model=model,
-        api_key=api_key,
-        max_tokens=max_tokens,
-        temperature=temperature,
-        stop_sequences=["</user_prompt>",],
-        **kwargs,
-    ) + "</user_prompt>"
+    full_output: str = (
+        await agen(
+            user=meta_prompt,
+            messages=messages,
+            system=meta_system_prompt,
+            model=model,
+            api_key=api_key,
+            max_tokens=max_tokens,
+            temperature=temperature,
+            stop_sequences=[
+                "</user_prompt>",
+            ],
+            **kwargs,
+        )
+        + "</user_prompt>"
+    )
     system_prompt: Union[List[str], str] = get_xml(
         tag="system_prompt", content=full_output
     )
