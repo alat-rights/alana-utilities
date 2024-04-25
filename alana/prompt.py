@@ -421,8 +421,9 @@ def gen_prompt(
         api_key=api_key,
         max_tokens=max_tokens,
         temperature=temperature,
+        stop_sequences=["</user_prompt>",],
         **kwargs,
-    )
+    ) + "</user_prompt>"
     system_prompt: Union[List[str], str] = get_xml(
         tag="system_prompt", content=full_output
     )
