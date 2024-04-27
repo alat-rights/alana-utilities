@@ -4,7 +4,7 @@ from unittest.mock import patch
 from anthropic.types import Message, MessageParam, ContentBlock, Usage
 from anthropic import RateLimitError, InternalServerError
 from alana import *
-from flaky import flaky
+from flaky import flaky  # type: ignore
 
 
 class TestFunctions(unittest.TestCase):

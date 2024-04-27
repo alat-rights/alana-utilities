@@ -17,4 +17,4 @@ jobs:
           python -m pip install --upgrade pip
           pip install black
       - name: Format code
-        run: black .
+        run: black . --check
