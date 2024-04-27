@@ -119,9 +119,10 @@ In general, we follow the ["fork-and-pull" Git workflow](https://github.com/susa
 We are using [Black](https://github.com/psf/black) for formating and [PyRight](https://github.com/microsoft/pyright) for type checking.
 
 Before pushing your code and making PR make sure that you have run `black .` on your code, otherwise it will fail.
+To install and run black use this commands:
 ```commandline
   $ pip install black
-  $ black.
+  $ black .
 ```
 To keep types in code consistent:
 ```commandline
