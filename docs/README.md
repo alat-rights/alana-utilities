@@ -106,7 +106,30 @@ The documentation for this project is hosted at [utils.alana.computer](https://u
   - `alana.remove_xml` to strip certain XML tag-enclosed content from a string (along with the tags). This is primarily intended to get rid of "<reasoning>...</reasoning>" strings. ⚠️ Regex parsing of XML may be unreliable!
 - A bunch of aliases (Try: `alana.few_shot`, `alana.n_shot`, or `alana.xml`)
 
-## Testing
+## Contributing
+A big welcome and thank you for considering contributing to alana-utilities open source project! It’s people like you that make it a reality for users in our community.
+
+Reading and following these guidelines will help us make the contribution process easy and effective for everyone involved. It also communicates that you agree to respect the time of the developers managing and developing these open source projects. In return, we will reciprocate that respect by addressing your issue, assessing changes, and helping you finalize your pull requests.
+
+### Getting started
+For changes that address core functionality or would require breaking changes (e.g. a major release), it's best to open an Issue to discuss your proposal first. This is not required but can save time creating and reviewing changes.
+In general, we follow the ["fork-and-pull" Git workflow](https://github.com/susam/gitpr).
+
+### Style and formating
+We are using [Black](https://github.com/psf/black) for formating and [PyRight](https://github.com/microsoft/pyright) for type checking.
+
+Before pushing your code and making PR make sure that you have run `black .` on your code, otherwise it will fail.
+```commandline
+  $ pip install black
+  $ black.
+```
+To keep types in code consistent:
+```commandline
+  $ pip install pyright
+  $ pyright .
+```
+
+### Testing
 There are simple tests written with `unittest`. I am working on extending the test suite.
 
 You may need to provide your Anthropic API key as an environment variable to run all of the unit tests. See [#10](https://github.com/alat-rights/alana-utilities/issues/10).
