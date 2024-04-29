@@ -1,9 +1,8 @@
 from setuptools import setup, find_packages
-import os
 
 setup(
     name="alana",
-    version="0.0.8",  # Update the version number as needed
+    version="0.0.9",  # Update the version number as needed
     author="Alana",
     author_email="hi@alana.computer",
     description="Utilities for Alana, and maybe you too. Mostly geared toward LLM-heavy workflows.",
