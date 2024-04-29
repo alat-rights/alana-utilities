@@ -106,7 +106,34 @@ The documentation for this project is hosted at [utils.alana.computer](https://u
   - `alana.remove_xml` to strip certain XML tag-enclosed content from a string (along with the tags). This is primarily intended to get rid of "<reasoning>...</reasoning>" strings. ⚠️ Regex parsing of XML may be unreliable!
 - A bunch of aliases (Try: `alana.few_shot`, `alana.n_shot`, or `alana.xml`)
 
-## Testing
+## Contributing
+Welcome! Thank you for considering making a contribution to `alana-utilities`.
+
+### Getting started
+If you'd like to make a major refactor or breaking change, please open an [Issue](https://github.com/alat-rights/alana-utilities/issues) first. This way, I can review it to determine if it is within scope for this project.
+
+There are no guarantees that your pull requests will be merged into the library. `alana-utilities` is essentially a hobby project, and there is currently only one maintainer.
+
+In general, we follow the ["fork-and-pull" Git workflow](https://github.com/susam/gitpr).
+
+### Style and formating
+We are using [Black](https://github.com/psf/black) for formatting and [PyRight](https://github.com/microsoft/pyright) for type checking.
+
+Before submitting a pull request, please run `black .` on your code. This saves us from failed CI runs.
+
+To install and run `Black`:
+```commandline
+  $ pip install black
+  $ black .
+```
+
+To install and run `PyRight`:
+```commandline
+  $ pip install pyright
+  $ pyright .
+```
+
+### Testing
 There are simple tests written with `unittest`. I am working on extending the test suite.
 
 You may need to provide your Anthropic API key as an environment variable to run all of the unit tests. See [#10](https://github.com/alat-rights/alana-utilities/issues/10).
