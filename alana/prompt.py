@@ -224,7 +224,7 @@ def gen_msg(
         >>> print(response.content[0].text)
         The capital of France is Paris.
     """
-    updated_messages: List[MessageParam] = _construct_messages(
+    constructed_messages: List[MessageParam] = _construct_messages(
         user_message=user, messages=messages
     )
 
@@ -248,7 +248,7 @@ def gen_msg(
 
     message: Message = client.messages.create(  # TODO: Enable streaming support
         max_tokens=max_tokens,
-        messages=updated_messages,
+        messages=constructed_messages,
         system=system,
         model=backend,
         temperature=temperature,
