@@ -118,7 +118,7 @@ In general, we follow the ["fork-and-pull" Git workflow](https://github.com/susa
 ### Style and formating
 We are using [Black](https://github.com/psf/black) for formating and [PyRight](https://github.com/microsoft/pyright) for type checking.
 
-Before pushing your code and making PR make sure that you have run `black .` on your code, otherwise it will fail.
+Before submitting a pull request, please run `black .` on your code. This saves us from failed CI runs.
 To install and run black use this commands:
 ```commandline
   $ pip install black
