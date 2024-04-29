@@ -110,7 +110,9 @@ The documentation for this project is hosted at [utils.alana.computer](https://u
 Welcome! Thank you for considering making a contribution to `alana-utilities`.
 
 ### Getting started
-For changes that address core functionality or would require breaking changes (e.g. a major release), it's best to open an Issue to discuss your proposal first. This is not required but can save time creating and reviewing changes.
+If you'd like to make a major refactor or breaking change, please open an [Issue](https://github.com/alat-rights/alana-utilities/issues) first. This way, I can review it to determine if it is within scope for this project.
+
+In general, there are no guarantees that your pull requests will be merged into the library. `alana-utilities` is essentially a hobby project, and there is currently only one maintainer.
 In general, we follow the ["fork-and-pull" Git workflow](https://github.com/susam/gitpr).
 
 ### Style and formating
