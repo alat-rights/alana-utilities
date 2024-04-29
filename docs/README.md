@@ -117,7 +117,7 @@ There are no guarantees that your pull requests will be merged into the library.
 In general, we follow the ["fork-and-pull" Git workflow](https://github.com/susam/gitpr).
 
 ### Style and formating
-We are using [Black](https://github.com/psf/black) for formating and [PyRight](https://github.com/microsoft/pyright) for type checking.
+We are using [Black](https://github.com/psf/black) for formatting and [PyRight](https://github.com/microsoft/pyright) for type checking.
 
 Before submitting a pull request, please run `black .` on your code. This saves us from failed CI runs.
 To install and run `Black`:
