@@ -124,7 +124,7 @@ To install and run `Black`:
   $ pip install black
   $ black .
 ```
-To keep types in code consistent:
+To install and run `PyRight`:
 ```commandline
   $ pip install pyright
   $ pyright .
