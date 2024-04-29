@@ -85,15 +85,20 @@ def _construct_messages(
         and len(messages) >= 1
         and messages[-1]["role"] == "user"
     ):
+        # Last message is user-message, but user_message provided
         raise ValueError(
-            "`gen`: Bad request! Roles must be alternating. Last message in `messages` is from user, but `user` provided."
+            "`gen`: Bad request! Roles must be alternating. Last message in `messages` is from user, but `user_message` provided."
         )
 
     if user_message is not None:
+        # user_message provided, so we must either create `messages` or append to it
+        # user_message should have role "user"
         return respond(content=user_message, messages=messages, role="user")
     elif messages is None:
+        # user_message is None and messages is None
         raise ValueError("No prompt provided! `user` and `messages` are both None.")
     else:
+        # user_message is None, so we just return the messages we received
         return messages
 
 
