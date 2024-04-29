@@ -125,6 +125,7 @@ To install and run `Black`:
   $ pip install black
   $ black .
 ```
+
 To install and run `PyRight`:
 ```commandline
   $ pip install pyright
