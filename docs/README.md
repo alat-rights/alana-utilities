@@ -107,7 +107,7 @@ The documentation for this project is hosted at [utils.alana.computer](https://u
 - A bunch of aliases (Try: `alana.few_shot`, `alana.n_shot`, or `alana.xml`)
 
 ## Contributing
-A big welcome and thank you for considering contributing to alana-utilities open source project!
+Welcome! Thank you for considering making a contribution to `alana-utilities`.
 
 ### Getting started
 For changes that address core functionality or would require breaking changes (e.g. a major release), it's best to open an Issue to discuss your proposal first. This is not required but can save time creating and reviewing changes.
