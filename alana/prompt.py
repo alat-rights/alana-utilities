@@ -102,7 +102,7 @@ def _append_assistant_message(messages, output):
         messages[-1]["role"] == "assistant"
     ):  # NOTE: Anthropic API does not allow non-alternating roles (raises Err400). Let's enforce this.
         # NOTE: messages[-1]["content"] is assistant output, so should be `str`, since Anthropic API (as of Apr 16 2024) only supports text output!
-        existing_assistant_content: str = messages[-1]["content"]  # type: ignore
+        existing_assistant_content: str = messages[-1]["content"]
         assistant_content: str = existing_assistant_content + output.content[0].text
         messages.pop()
     else:
@@ -111,7 +111,7 @@ def _append_assistant_message(messages, output):
     respond(content=assistant_content, messages=messages, role="assistant")
 
 
-def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[MessageParam]] = None, append: bool = True, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens=1024, temperature=1.0, loud=True, **kwargs: Any) -> str:  # type: ignore
+def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[MessageParam]] = None, append: bool = True, model: str = globals.DEFAULT_MODEL, api_key: Optional[str] = None, max_tokens=1024, temperature=1.0, loud=True, **kwargs: Any) -> str:
     """Generate a response from Claude. Returns the text content (`str`) of Claude's response. If you want the Message object instead, use `gen_msg`.
 
     Args:
@@ -147,12 +147,12 @@ def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[Me
         >>> print(response)
         "Hello! How can I assist you today?"
     """
-    messages: List[MessageParam] = _construct_messages(
+    updated_messages: List[MessageParam] = _construct_messages(
         user_message=user, messages=messages
     )
     output: Message = gen_msg(
         system=system,
-        messages=messages,
+        messages=updated_messages,
         model=model,
         api_key=api_key,
         max_tokens=max_tokens,
@@ -161,12 +161,13 @@ def gen(user: Optional[str] = None, system: str = "", messages: Optional[List[Me
         **kwargs,
     )
     if append == True:
-        _append_assistant_message(messages=messages, output=output)
+        _append_assistant_message(messages=updated_messages, output=output)
     return output.content[0].text
 
 
 def gen_msg(
-    messages: List[MessageParam],
+    messages: Optional[List[MessageParam]] = None,
+    user: Optional[str] = None,
     system: str = "",
     model: str = globals.DEFAULT_MODEL,
     api_key: Optional[str] = None,
@@ -206,6 +207,10 @@ def gen_msg(
         >>> print(response.content[0].text)
         The capital of France is Paris.
     """
+    updated_messages: List[MessageParam] = _construct_messages(
+        user_message=user, messages=messages
+    )
+
     backend: str = globals.MODELS[globals.DEFAULT_MODEL]
     if model in globals.MODELS:
         backend = globals.MODELS[model]
@@ -226,7 +231,7 @@ def gen_msg(
 
     message: Message = client.messages.create(  # TODO: Enable streaming support
         max_tokens=max_tokens,
-        messages=messages,
+        messages=updated_messages,
         system=system,
         model=backend,
         temperature=temperature,
