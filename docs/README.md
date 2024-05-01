@@ -17,7 +17,7 @@
 </p>
 
 ## What is alana-utilities?
-This library is designed to make interacting with Claude fast and easy. It is primarily targetted toward people writing non-production, prototype code. It prioritizes developer ergonomics.
+This library is designed to make interacting with Claude fast and easy. It is primarily targeted toward people writing non-production, prototype code. It prioritizes developer ergonomics.
 
 It speeds up lots of things that I frequently find myself doing with Claude.
 
