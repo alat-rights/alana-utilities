@@ -201,7 +201,8 @@ def gen_msg(
     """Generate a response from Claude using the Anthropic API.
 
     Args:
-        messages (List[MessageParam]): A list of `anthropic.types.MessageParam`s representing the conversation history.
+        messages (List[MessageParam], optional): A list of `anthropic.types.MessageParam`s representing the conversation history.
+        user (str, optional): Instead of passing a `messages`, you can pass in a single user prompt.
         system (str, optional): The system message to set the context for Claude. Defaults to "".
         model (str, optional): The name of the model to use. Defaults to globals.DEFAULT_MODEL.
         api_key (Optional[str], optional): The API key to use for authentication. Defaults to None.
