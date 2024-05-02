@@ -13,7 +13,8 @@ client = AsyncAnthropic(
 
 
 async def agen_msg(
-    messages: List[MessageParam],
+    messages: Optional[List[MessageParam]] = None,
+    user: Optional[str] = None,
     system: str = "",
     model: str = globals.DEFAULT_MODEL,
     api_key: Optional[str] = None,
@@ -24,6 +25,10 @@ async def agen_msg(
     **kwargs: Any,
 ):
     """Experimental. Async version of gen_msg. Invoke with `asyncio.run(agen_msg)`"""
+    constructed_messages: List[MessageParam] = _construct_messages(
+        user_message=user, messages=messages
+    )
+
     backend: str = globals.MODELS[globals.DEFAULT_MODEL]
     if model in globals.MODELS:
         backend = globals.MODELS[model]
@@ -44,7 +49,7 @@ async def agen_msg(
         message: Message = (
             await client.messages.create(  # TODO: Enable streaming support
                 max_tokens=max_tokens,
-                messages=messages,
+                messages=constructed_messages,
                 system=system,
                 model=backend,
                 temperature=temperature,
@@ -54,7 +59,7 @@ async def agen_msg(
     else:
         async with client.messages.stream(
             max_tokens=max_tokens,
-            messages=messages,
+            messages=constructed_messages,
             system=system,
             model=backend,
             temperature=temperature,

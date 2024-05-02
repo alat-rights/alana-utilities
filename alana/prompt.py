@@ -85,15 +85,20 @@ def _construct_messages(
         and len(messages) >= 1
         and messages[-1]["role"] == "user"
     ):
+        # Last message is user-message, but user_message provided
         raise ValueError(
-            "`gen`: Bad request! Roles must be alternating. Last message in `messages` is from user, but `user` provided."
+            "`gen`: Bad request! Roles must be alternating. Last message in `messages` is from user, but `user_message` provided."
         )
 
     if user_message is not None:
+        # user_message provided, so we must either create `messages` or append to it
+        # user_message should have role "user"
         return respond(content=user_message, messages=messages, role="user")
     elif messages is None:
+        # user_message is None and messages is None
         raise ValueError("No prompt provided! `user` and `messages` are both None.")
     else:
+        # user_message is None, so we just return the messages we received
         return messages
 
 
@@ -163,6 +168,7 @@ def gen(
         >>> print(response)
         "Hello! How can I assist you today?"
     """
+
     constructed_messages: List[MessageParam] = _construct_messages(
         user_message=user, messages=messages
     )
@@ -182,7 +188,8 @@ def gen(
 
 
 def gen_msg(
-    messages: List[MessageParam],
+    messages: Optional[List[MessageParam]] = None,
+    user: Optional[str] = None,
     system: str = "",
     model: str = globals.DEFAULT_MODEL,
     api_key: Optional[str] = None,
@@ -194,7 +201,8 @@ def gen_msg(
     """Generate a response from Claude using the Anthropic API.
 
     Args:
-        messages (List[MessageParam]): A list of `anthropic.types.MessageParam`s representing the conversation history.
+        messages (List[MessageParam], optional): A list of `anthropic.types.MessageParam`s representing the conversation history.
+        user (str, optional): Instead of passing a `messages`, you can pass in a single user prompt.
         system (str, optional): The system message to set the context for Claude. Defaults to "".
         model (str, optional): The name of the model to use. Defaults to globals.DEFAULT_MODEL.
         api_key (Optional[str], optional): The API key to use for authentication. Defaults to None.
@@ -222,6 +230,10 @@ def gen_msg(
         >>> print(response.content[0].text)
         The capital of France is Paris.
     """
+    constructed_messages: List[MessageParam] = _construct_messages(
+        user_message=user, messages=messages
+    )
+
     backend: str = globals.MODELS[globals.DEFAULT_MODEL]
     if model in globals.MODELS:
         backend = globals.MODELS[model]
@@ -242,7 +254,7 @@ def gen_msg(
 
     message: Message = client.messages.create(  # TODO: Enable streaming support
         max_tokens=max_tokens,
-        messages=messages,
+        messages=constructed_messages,
         system=system,
         model=backend,
         temperature=temperature,
