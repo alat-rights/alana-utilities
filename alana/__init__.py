@@ -13,7 +13,7 @@
 `aliases` include alternate names for common functions.
 """
 
-from alana.color import red, blue, green, yellow, cyan, pink, heatmap, scatter
+from alana.color import red, blue, green, yellow, cyan, pink, heatmap, scatter, data_atlas
 from alana.prompt import (
     get_xml,
     get_xml_pattern,
