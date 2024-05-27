@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="alana",
-    version="0.0.9",  # Update the version number as needed
+    version="0.0.10",  # Update the version number as needed
     author="Alana",
     author_email="hi@alana.computer",
     description="Utilities for Alana, and maybe you too. Mostly geared toward LLM-heavy workflows.",
